@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			.warter_conter {
+				max-width: 480px;
+				width: 100%;
+				margin: auto;
+				overflow: hidden;
+			
+			}
+			
+			.mui-col-xs-6 {
+				float: left;
+			}
+			.warter_conter .mui-col-xs-6  a{
+				display: block;
+				width: 96%; margin:10px auto; background: #c5c4c4; padding: 5px 0px;
+			}
+			.warter_conter .mui-col-xs-6 img {
+				display: block;
+				width: 94%;
+				  margin:0.5rem auto;
+			}
+			.clearfix:after {
+				content: ".";
+				display: block;
+				height: 0;
+				clear: both;
+				visibility: hidden;
+			}
+		</style>
+	</head>
+
+	<body style="	background: #e8e8e8;">
+		<div class="mui-content">
+			<!--下拉刷新容器-->
+			<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div class="warter_conter">
+						<div class="mui-col-xs-6">
+							<div id="list1" class="">
+							</div>
+							<span id="list_bottom1"></span>
+						</div>
+						<div class="mui-col-xs-6">
+							<div id="list2" class=""></div>
+							<span id="list_bottom2"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript">
+		var Arrimg = ['images/124 (1).jpg', 'images/124 (2).jpg', 'images/124 (3).jpg', 'images/124 (4).jpg', 'images/124 (5).jpg', 'images/124 (6).jpg',
+			'images/124 (7).jpg', 'images/124 (8).jpg', 'images/124 (9).jpg', 'images/124 (10).jpg', 'images/124 (11).jpg', 'images/124 (12).jpg', 'images/124 (13).jpg', 'images/124 (14).jpg', 'images/124 (15).jpg', 'images/124 (16).jpg', 'images/124 (17).jpg', 'images/124 (18).jpg'
+		];
+		var domElementsId = {
+			list1: document.getElementById('list1'),
+			list2: document.getElementById('list2'),
+//			list3: document.getElementById('list3'),
+			list_b_1: document.getElementById('list_bottom1'),
+			list_b_2: document.getElementById('list_bottom2'),
+//			list_b_3: document.getElementById('list_bottom3')
+		}
+
+		function waterFallImages(domes, Arrimg) {
+			this.list1 = domes.list1;
+			this.list2 = domes.list2;
+//			this.list3 = domes.list3;
+			this.list_b_1 = domes.list_b_1;
+			this.list_b_2 = domes.list_b_2;
+//			this.list_b_3 = domes.list_b_3;
+			this.Arr = Arrimg
+		}
+		waterFallImages.prototype.getNowListMinTop = function() {
+			var _list_1_top = this.list_b_1.offsetTop,
+				_list_2_top = this.list_b_2.offsetTop;
+//				_list_3_top = this.list_b_3.offsetTop;
+			var min_top = Math.min(_list_1_top, _list_2_top);
+			if (min_top == _list_1_top) {
+				return 1;
+			} else {
+				return 2;
+			}
+		}
+		waterFallImages.prototype.InsertImg = function(start_i, end_i) {
+			var _this = this;
+			var img = new Image;
+			img.onload = function() {
+				var _a = document.createElement('a')
+				var _img = document.createElement('img');
+				_img.src = _this.Arr[start_i];
+				_img.setAttribute('class', 'img-responsive');
+				_a.appendChild(_img);
+				var _i = _this.getNowListMinTop()
+				switch (_i) {
+					case 1:
+						_this.list1.appendChild(_a)
+						break;
+//					case 2:
+//						_this.list2.appendChild(_a)
+//						break;
+					default:
+						_this.list2.appendChild(_a)
+						break;
+				}
+				start_i++
+				if (start_i < end_i) {
+					_this.InsertImg(start_i, end_i)
+				}
+			}
+			img.src = _this.Arr[start_i]
+		}
+		var waterFallImages = new waterFallImages(domElementsId, Arrimg)
+		waterFallImages.InsertImg(0, 12)
+		var _content=0
+			mui.init({
+				pullRefresh: {
+					container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					up: {
+						contentdown: "正在加载...", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+					    contentnomore:'没有更多数据了', //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+						callback: function(){
+							var _this=this
+							_content++;
+							if(_content>5){
+								setTimeout(function(){
+							    	_this.endPullupToRefresh(true);	
+							    	
+								},200)
+							
+							}else{
+                              	this.endPullupToRefresh(false);
+                              }
+							
+							waterFallImages.InsertImg(12, 17)
+						} //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				}
+			});
+			
+	</script>
+</html>

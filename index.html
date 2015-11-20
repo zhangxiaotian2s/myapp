@@ -7,138 +7,86 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
 		<link rel="stylesheet" href="css/mui.min.css">
 		<style>
-		.my-mui-bar-tab{ height: 50px; background: #757472;}
-		.my-mui-bar-tab h2{font-size: 17px;  padding-top: 10px; line-height: 16px; margin: 0 auto; color: #FFFFFF;}
-		 .my-mui-bar-tab span{ font-size: 8px;  color: #FFFFFF;}
-		 .my-mui-bar-tab .mui-active h2{ color: #ff9c00;}
-		 .my-mui-bar-tab .mui-active span{ color:#ff9c00;}
+			.my-mui-bar-tab {
+				background: #FFFFFF;
+				border-top: #e1e1e1 solid 1px!important;
+				bottom: -1px;
+			}
+			
+			.my-mui-bar-tab span{
+				display: block;
+				font-size: 26px;
+				color: #999999;
+			}
+			
 		
+			.my-mui-bar-tab p {
+				font-size: 12px;
+				 margin: 0px auto;
+			}
+		
+			.my-mui-bar-tab .mui-active p,.my-mui-bar-tab .mui-active span {
+				color: #ff6668;
+			}
+			
+			.mui-bar-nav {
+				background: #FFFFFF;
+				border-bottom: #fe6f5f solid 1px;
+			}
+			
+			.mui-bar-nav h1 {
+				 font-size:18px;
+				color: #000000;
+			}
 		</style>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-			<h1 class="mui-title">摄影圈</h1>
+			<h1 class="mui-title" id="mui-title">发现</h1>
 		</header>
 
 		<nav class="mui-bar mui-bar-tab my-mui-bar-tab">
-			<a class="mui-tab-item mui-active" href="#tabbar">
-				<h2>发现</h2>
-				<span class="mui-tab-label">Find</span>
+			<a class="mui-tab-item  mui-active" href="page-photollist.html" data-title="影展" data-index='0'>
+				  <span class="iconfont icon-tupian2"></span>
+				<p>影展</p>
 			</a>
-			<a class="mui-tab-item" href="#tabbar-with-chat">
-				<h2>影展</h2>
-				<span class="mui-tab-label">Photo exhibiton</span>
+			<a class="mui-tab-item" href="page-newslist.html" data-title="资讯" data-index='1'>
+				<span class="iconfont  icon-tubiao1xinwen"></span>
+				<p>资讯</p>
 			</a>
-			<a class="mui-tab-item" href="#tabbar-with-chat">
-				<span class="mui-icon mui-icon-camera"></span>
-				<span class="mui-tab-label">updata</span>
+			<a class="mui-tab-item" href="mypages/register.html" data-title="我" data-index='2'>
+				<span class="iconfont icon-gerenzhongxin"></span>
+				<p>我</p>
 			</a>
-			<a class="mui-tab-item" href="#tabbar-with-chat">
-				<h2>圈子</h2>
-				<span class="mui-tab-label">Cricle</span>
-			</a>
-			<a class="mui-tab-item" href="#tabbar-with-chat">
-				<h2>个人</h2>
-				<span class="mui-tab-label">Account</span>
-			</a>
-		
 		</nav>
-
 		<script src="js/mui.min.js"></script>
 		<script src="js/update.js" type="text/javascript" charset="utf-8"></script>
+
 		<script>
 			var menu = null,
 				main = null;
 			var showMenu = false;
 			mui.init({
 				swipeBack: false,
-				statusBarBackground: '#f7f7f7',
+				statusBarBackground: '#FFFFFF',
 				gestureConfig: {
 					doubletap: true
-				},
-				subpages: [{
-						id: 'list',
-						url: 'list.html',
-						styles: {
-							top: '45px',
-							bottom: '50px',
-							bounce: 'vertical'
-						}
-					},
-					//				{
-					//					id: 'nav',
-					//					url: 'nav.html',
-					//					styles: {
-					//						bottom: '0px',
-					//						bounce: 'vertical'
-					//					}
-					//				}
-				]
-			});
-			mui.plusReady(function() {
-				//仅支持竖屏显示
-				plus.screen.lockOrientation("portrait-primary");
-				main = plus.webview.currentWebview();
-				main.addEventListener('maskClick', closeMenu);
-				//处理侧滑导航，为了避免和子页面初始化等竞争资源，延迟加载侧滑页面；
-				//				setTimeout(function() {
-				//					menu = mui.preload({
-				//						id: 'index-menu',
-				//						url: 'index-menu.html',
-				//						styles: {
-				//							left: 0,
-				//							width: '70%',
-				//							zindex: -1
-				//						},
-				//						show: {
-				//							aniShow: 'none'
-				//						}
-				//					});
-				//				}, 200);
-			});
-		
-			 //点击左上角侧滑图标，打开侧滑菜单；
-			document.querySelector('.mui-icon-bars').addEventListener('tap', function(e) {
-				if (showMenu) {
-					closeMenu();
-				} else {
-					openMenu();
 				}
 			});
-			 //敲击顶部导航，内容区回到顶部
+			//敲击顶部导航，内容区回到顶部
 			document.querySelector('header').addEventListener('doubletap', function() {
+//				main.children()[0].styles.scrollsToTop=true;
 				main.children()[0].evalJS('mui.scrollTo(0, 100)');
 			});
-			 
-				//处理右上角关于图标的点击事件；
-			var subWebview = null,
-				template = null;
-			document.getElementById('info').addEventListener('tap', function() {
-				if (subWebview == null) {
-					//获取共用父窗体
-					template = plus.webview.getWebviewById("default-main");
-				}
-				if (template) {
-					subWebview = template.children()[0];
-					subWebview.loadURL('examples/info.html');
-					//修改共用父模板的标题
-					mui.fire(template, 'updateHeader', {
-						title: '关于',
-						showMenu: false
-					});
-					template.show('slide-in-right', 150);
-				}
-			});
-			 //首页返回键处理
-			 //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+			//首页返回键处理
+			//处理逻辑：1秒内，连续两次按返回键，则退出应用；
 			var first = null;
 			mui.back = function() {
 				if (showMenu) {
-					closeMenu();
+					//					closeMenu();
 				} else {
 					//首次按键，提示‘再按一次退出应用’
 					if (!first) {
@@ -154,6 +102,67 @@
 					}
 				}
 			};
+			var subpages = ['page-photollist.html', 'page-newslist.html','mypages/register.html'];
+			var subpage_style = {
+				top: '45px',
+				bottom: '50px',
+				bounce: 'vertical',
+				scrollsToTop:true,
+				hardwareAccelerated: true
+			};
+			//创建子页面，首个选项卡页面显示，其它均隐藏；
+			mui.plusReady(function() {
+				plus.navigator.setStatusBarBackground("#ffffff");
+				main = plus.webview.currentWebview();
+				for (i = 0; i < 3; i++) {
+					var sub = mui.preload({
+						url: subpages[i],
+						id: subpages[i],
+						styles: subpage_style,
+					})
+					if (i > 0) {
+						sub.hide()
+					}
+					main.append(sub);
+				}
+				plus.storage.setItem('tab_index', '0')
+			});
+			//创建一个指定openWindow的方法
+			var activeTab = subpages[0];
+			var lastActiveTabs = new Array();
+			var mui_title = document.getElementById('mui-title');
+			//选项卡点击事件
+			mui('.mui-bar-tab').on('tap', 'a', function(e) {
+				var _index = this.getAttribute('data-index')
+				var tab_index = plus.storage.getItem('tab_index');
+				plus.storage.setItem('tab_index', _index)
+				var targetTab = this.getAttribute('href');
+				var title = this.getAttribute('data-title');
+				//打开页面
+				if (targetTab == activeTab) {
+					return;
+				}
+				//先隐藏当前的
+				if (tab_index <= _index) {
+					plus.webview.hide(activeTab, 'slide-out-left', 400, function() {
+					});
+					//再显示目标
+					plus.webview.show(targetTab, 'slide-in-right', 400, function() {
+						mui_title.innerText = title
+					});
+				} else {
+					plus.webview.hide(activeTab, 'slide-out-right', 400,function(){
+					});
+					//再显示目标
+					plus.webview.show(targetTab, 'slide-in-left', 400, function() {
+						mui_title.innerText = title
+					});
+				}
+				//记录上次活跃的选项卡
+				lastActiveTabs.push(activeTab);
+				//更改当前活跃的选项卡
+				activeTab = targetTab;
+			});
 		</script>
 	</body>
 

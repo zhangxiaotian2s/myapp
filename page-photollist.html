@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style type="text/css">
+			#list {
+				/*避免导航边框和列表背景边框重叠，看起来像两条边框似得；*/
+				margin-top: -1px;
+			}
+			
+			.artical-ul {
+				padding: 0px
+			}
+			
+			.artical-ul li {
+				width: 100%;
+				margin: 10px auto;
+				border: #e7e7e7 solid 1px;
+				box-shadow: 0px 0px 3px #e7e7e7;
+				list-style: none;
+				padding: 5px 0px;
+				background: #f6f6f6;
+			}
+			
+			.artical-ul li h2 {
+				font-size: 17px;
+				font-weight: normal;
+				line-height: 22px;
+				color: #3C3C3C
+			}
+			.mui-table-view-cell:after{
+				background: none;
+			}
+			.artical-ul li .img-box {
+				background: url(http://image-staging.mastergolf.cn/zwt/zwt_480_120.jpg@1e_480w_200h_1c_0i_0o_60q.jpg) no-repeat center;
+				background-size: cover;
+				height: 210px;
+				overflow: hidden;
+			}
+			
+			.artical-ul li img {
+				width: 100%;
+				margin: auto;
+			}
+			
+			.artical-ul li.mui-active {
+				background: #eeeeee;
+			}
+			
+			.artical-ul li p {
+				font-size: 14px;
+				color: #3C3C3C;
+			}
+		</style>
+	</head>
+
+	<body >
+		<div class="mui-content">
+			<!--下拉刷新容器-->
+			<div id="refreshContainerArticalList" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul id="list" class="artical-ul">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script>
+			var aniShow = "pop-in";
+			//只有ios支持的功能需要在Android平台隐藏；
+			if (mui.os.android) {
+				var list = document.querySelectorAll('.ios-only');
+				if (list) {
+					for (var i = 0; i < list.length; i++) {
+						list[i].style.display = 'none';
+					}
+				}
+				//Android平台暂时使用slide-in-right动画
+				if (parseFloat(mui.os.version) < 4.4) {
+					aniShow = "slide-in-right";
+				}
+			}
+			//初始化，并预加载webview模式的选项卡			
+			function preload() {
+			}
+			//两个判断是否关闭启动页的条件
+			var canclose = false
+			ajaxPhotoList()
+			mui.plusReady(function() {
+				//读取本地存储，检查是否为首次启动
+				//								var showGuide = plus.storage.getItem("lauchFlag");
+				var showGuide = true
+					//				plus.storage.clear("lauchFlag");
+				if (showGuide) {
+					//有值，说明已经显示过了，无需显示；
+					//关闭splash页面；
+					setTimeout(function(){
+							plus.navigator.closeSplashscreen();
+							plus.navigator.setFullscreen(false);
+					},1500)
+						//填入文章列表
+					ajaxPhotoList()
+						//预加载
+					preload();
+				} else {
+					//显示启动欢迎界面
+					mui.openWindow({
+						id: 'guide',
+						url: 'mypages/guide.html',
+						show: {
+							aniShow: 'none'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+					//延迟的原因：优先打开启动导航页面，避免资源争夺
+					setTimeout(function() {
+						//预加载
+						preload();
+					}, 200);
+				}
+			});
+			var index = null; //主页面
+			function openMenu() {
+				!index && (index = mui.currentWebview.parent());
+				mui.fire(index, "menu:open");
+			}
+			//在android4.4.2中的swipe事件，需要preventDefault一下，否则触发不正常
+			window.addEventListener('dragstart', function(e) {
+				mui.gestures.touch.lockDirection = true; //锁定方向
+				mui.gestures.touch.startDirection = e.detail.direction;
+			});
+			window.addEventListener('dragright', function(e) {
+				if (!mui.isScrolling) {
+					e.detail.gesture.preventDefault();
+				}
+			});
+			var pages = 1
+			mui.init({
+				pullRefresh: {
+					container: "#refreshContainerArticalList", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					up: {
+						contentdown: "正在加载...", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+						contentnomore: '没有更多数据了', //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+						callback: function() {
+								var _this = this
+								pages++
+								if (pages > 10) {
+									_this.endPullupToRefresh(true);
+								} else {
+									ajaxPhotoList(pages)
+										//								plus.storage.clear('lastuuid')
+									_this.endPullupToRefresh(false);
+								}
+							} //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				}
+			});
+			
+			function ajaxPhotoList(page){
+				if(page==""){
+					page=1
+				}
+				mui.ajax('http://api.mastergolf.cn/v1/home/beauties/list.json?page='+page,{
+					dataType: 'json',
+					type:'get',
+					timeout:'5000',
+				     success:function(data){
+				     	var photolist=data.data;
+				         for (i=0;i<photolist.length;i++){
+				         photoListInsert(photolist[i].image,photolist[i].uuid,photolist[i].name)
+				         }
+				     },error:function(){
+				     }
+				})
+				
+			}
+			var articallistul = document.getElementById('list')
+			function photoListInsert(imgsrc, uuid, title, summary) {
+				var _li = document.createElement('li');
+				_li.setAttribute('class', 'mui-table-view-cell');
+				_li.setAttribute('open-type', 'common');
+				_li.setAttribute('id', 'mypages/atrical.html');
+				_li.setAttribute('data-uuid', uuid);
+				var _div = document.createElement('div')
+				_div.setAttribute('class', 'img-box')
+				var _h2 = document.createElement('h2')
+				_h2.innerText = title;
+				var _p = document.createElement('p')
+				_p.innerText = summary;
+				var _img = new Image;
+				_img.src = 'images/zwt.jpg';
+				_img.onload = function() {
+					_img.src=imgsrc
+					_div.appendChild(_img);
+					 _img.setAttribute('class','opacity-in')
+				}
+				_li.appendChild(_div);
+				_li.appendChild(_h2);
+				articallistul.appendChild(_li);
+			}
+			//			主列表点击事件
+			mui('#list').on('tap', 'li', function() {
+				var href = this.getAttribute('id');
+				var type = this.getAttribute("open-type");
+				var uuid = this.getAttribute('data-uuid');
+				//不使用父子模板方案的页面
+				if (type == "common") {
+					var webview_style = {
+						popGesture: "close",
+						blockNetworkImage: true,
+						scrollsToTop: true
+					};
+					mui.openWindow({
+						id: href,
+						url: href,
+						styles: {
+							hardwareAccelerated: true,
+							scrollsToTop: true,
+						},
+						show: {
+							autoShow: true,
+							duration: 300
+						},
+						extras: {
+							uuid: uuid
+						},
+						createNew: false,
+						waiting: {
+							autoShow: false
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title id="head_title">Hello MUI</title>
+		<meta name="description" content="" id="head_description" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title></title>
+		<link rel="stylesheet" href="../css/mui.min.css">
+	</head>
+
+	<body>
+		
+		<div class="mui-content"  style="background: #FFFFFF;">
+              
+              <input type="text"  />
+               <input type="button" id="get_capcha"  class="mui-btn-success" value="获取验证码" />
+		</div>
+		
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script>
+		mui.init()
+		//获得短信验证码
+       function getCapCha(){
+       	   mui.ajax('http://api.mastergolf.cn/v1/',{
+       	   	 data:{
+       	   	 	phone:'13120362961'
+       	   	 },
+       	   	 type:'get',
+       	   	 success:function(data){
+       	   	 	return true
+       	   	 },
+       	   	 error:function(){
+       	   	 	
+       	   	    return false
+       	   	 }
+       	   })
+        }
+      var  get_capcha_btn=document.getElementById('get_capcha')
+      get_capcha_btn.addEventListener('tap',function(){
+      	 getCapCha()
+      },false)
+	</script>
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title id="head_title">Hello MUI</title>
+		<meta name="description" content="" id="head_description" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			#artical_title {
+				padding: 10px 15px;
+				font-size: 17px;
+				text-align: left;
+				line-height: 22px;
+				min-height: 22px;
+				color: #333333;
+				border-bottom: #d8d8d8 solid 1px;
+			}
+			
+			#artical_time {
+				font-size: 12px;
+				color: #989898;
+				padding-left: 15px;
+			}
+			
+			.artical-content {
+				padding: 0px 15px;
+			}
+			.artical-content img{
+			  display: block;  margin: 10px auto;
+			}
+		</style>
+
+	</head>
+
+	<body style="background: #FFFFFF;">
+		<header class="mui-bar mui-bar-nav">
+			<a class="my-mui-action-back  mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title my-mui-title">文章详情</h1>
+		</header>
+		<div class="mui-content" id="mui-content" style="background: #FFFFFF;">
+			<div class="artical_title">
+				<h2 id="artical_title"></h2>
+			</div>
+			<time id="artical_time"></time>
+			<div class="mui-blank-10"></div>
+			<div class="artical-content" id="artical-content">
+				<div class="mui-blank-10"></div>
+				<div id="gg_img">
+				</div>
+				<div class="mui-blank-10"></div>
+				<div id="artical_first_img">
+				</div>
+				<div class="mui-blank-10"></div>
+
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/imgloading.js"></script>
+
+		<script>
+			mui.init({
+				gestureConfig: {
+					doubletap: true
+				}
+			});
+			var nwaiting
+			window.onload = function() {
+				mui.plusReady(function() {
+					nwaiting = plus.nativeUI.showWaiting(); //显示原生等待框
+					var self = plus.webview.currentWebview();
+					var uuid = self.uuid
+					AjaxGetArticalContent(uuid)
+				})
+			}
+			document.querySelector('header').addEventListener('doubletap', function() {
+				mui.scrollTo(0, 100)
+			});
+
+			function AjaxGetArticalContent(uuid) {
+				var _head_title = document.getElementById('head_title'),
+					_head_summary = document.getElementById('head_description'),
+					_artical_title = document.getElementById('artical_title'),
+					_artical_time = document.getElementById('artical_time'),
+					_artical_tgimg = document.getElementById('gg_img'),
+					_aritcal_content = document.getElementById('artical-content');
+				var url = 'http://api.mastergolf.cn/v1/news/articles/show.json?uuid=' + uuid
+				mui.ajax(url, {
+					dataType: 'json',
+					type: 'get',
+					timeout: 5000,
+					success: function(data) {
+						//关闭显示框
+						nwaiting.close();
+						var articalData = data.data,
+							articalDataContent = articalData.content;
+						var artical_title = articalData.title,
+							artical_summary = articalData.summary,
+							artical_time = GetArticalTime(articalData.published_at),
+							artical_tgimg_src = articalDataContent[0].url;
+						_head_title.innerText = artical_title;
+						_head_summary.setAttribute('content', artical_summary);
+						_artical_title.innerText = artical_title;
+						_artical_time.innerText = artical_time;
+						//内容上的添加
+						for (i = 0; i < articalDataContent.length; i++) {
+							if (i == 0) {
+								InserContent(artical_tgimg_src, _artical_tgimg, articalDataContent[i].type)
+							} else if (articalDataContent[i].type == 'image') {
+								InserContent(articalDataContent[i].url, _aritcal_content, 'image')
+							} else {
+								InserContent(articalDataContent[i].content, _aritcal_content, 'text')
+							}
+						}
+						var loadnow = new loadimg();
+						loadnow.scrolladd();
+						document.body.ontouchmove = function() {
+							loadnow.scrolladd();
+						}
+						window.onscroll = function() {
+							loadnow.scrolladd();
+						}
+					}
+				})
+			}
+
+			function GetArticalTime(nS) {
+				return new Date(parseInt(nS) * 1000).toLocaleString().substr(0, 11)
+			}
+
+			function InserContent(content, boxid, type) {
+				if (type == 'image') {
+					var img = new Image;
+					img.setAttribute('class', 'img-responsive  loadimg')
+					img.src = 'http://image-staging.mastergolf.cn/zwt/zwt_480_120.jpg@1e_480w_200h_1c_0i_0o_60q.jpg'
+					img.onload = new function() {
+						img.setAttribute('data-src', content)
+						boxid.appendChild(img)
+					}
+				} else if (type == 'text') {
+					boxid.innerHTML += content
+				}
+			}
+		</script>
+
+	</body>
+
+</html>
