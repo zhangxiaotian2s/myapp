@@ -26,19 +26,21 @@
 				list-style: none;
 				padding: 5px 0px;
 				background: #f6f6f6;
+				overflow: hidden;
 			}
 			
 			.artical-ul li h2 {
 				font-size: 17px;
 				font-weight: normal;
 				line-height: 22px;
+				 padding-left: 20px;
 				color: #3C3C3C
 			}
 			.mui-table-view-cell:after{
 				background: none;
 			}
 			.artical-ul li .img-box {
-				background: url(http://image-staging.mastergolf.cn/zwt/zwt_480_120.jpg@1e_480w_200h_1c_0i_0o_60q.jpg) no-repeat center;
+				background: url(images/zwt.jpg);
 				background-size: cover;
 				height: 210px;
 				overflow: hidden;
@@ -55,8 +57,12 @@
 			
 			.artical-ul li p {
 				font-size: 14px;
-				color: #3C3C3C;
+				color: #d4d4d4;
+				padding-left: 18px;
 			}
+		 .img-number{ padding:3px 15px; border:#b9b9b9 solid 1px; margin: 3px 0px 5px 10px; font-size: 14px; border-radius: 15px; float: left; color: #b9b9b9; line-height: 22px;}
+		 .img-xihuan{padding:3px 15px; border:#b9b9b9 solid 1px; margin:3px 10px 5px 0px;  float: right;font-size: 14px; border-radius: 15px; color: #b9b9b9;line-height: 22px}
+		.img-xihuan span{ color: #ff6666;}
 		</style>
 	</head>
 
@@ -66,7 +72,7 @@
 			<div id="refreshContainerArticalList" class="mui-content mui-scroll-wrapper">
 				<div class="mui-scroll">
 					<ul id="list" class="artical-ul">
-
+                       
 					</ul>
 				</div>
 			</div>
@@ -193,18 +199,20 @@
 				var _div = document.createElement('div')
 				_div.setAttribute('class', 'img-box')
 				var _h2 = document.createElement('h2')
-				_h2.innerText = title;
+				_h2.innerText = ' 《'+title+'》';
 				var _p = document.createElement('p')
-				_p.innerText = summary;
+				_p.innerText ='创作者:出手大方违法';
 				var _img = new Image;
-				_img.src = 'images/zwt.jpg';
-				_img.onload = function() {
 					_img.src=imgsrc
 					_div.appendChild(_img);
 					 _img.setAttribute('class','opacity-in')
-				}
 				_li.appendChild(_div);
 				_li.appendChild(_h2);
+				_li.appendChild(_p);
+				var _html_img_number='<div class="img-number"><span class="iconfont  icon-tupian"></span>&nbsp;33</div>';
+				var _html_img_xihuan='<div class="img-xihuan"><span class="iconfont  icon-xin"></span>&nbsp;33</div>';
+				_li.innerHTML+=_html_img_number;
+				_li.innerHTML+=_html_img_xihuan;
 				articallistul.appendChild(_li);
 			}
 			//			主列表点击事件
