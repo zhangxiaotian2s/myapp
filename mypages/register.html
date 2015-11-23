@@ -11,39 +11,270 @@
 		<title></title>
 		<link rel="stylesheet" href="../css/mui.min.css">
 	</head>
+	<style>
+		.register_login_bk {
+			background: url(../images/register_bk.jpg);
+			background-size: cover;
+		}
+		
+		.login-register-header {
+			position: relative;
+			margin-top: 20px;
+			height: 44px;
+		}
+		
+		.login-register-header .mui-title {
+			right: 40px;
+			left: 40px;
+			display: inline-block;
+			overflow: hidden;
+			width: auto;
+			margin: 0;
+			text-overflow: ellipsis;
+		}
+		
+		.login-register-header .mui-icon {
+			font-size: 26px;
+			color: #FFFFFF;
+			margin: 6px 0px 6px 15px;
+		}
+		
+		.login-register-header h1 {
+			font-size: 20px;
+			color: #FFFFFF;
+		}
+		
+		.login_box {
+			padding: 50px 30px;
+		}
+		
+		.mui-content {
+			background: none;
+		}
+		
+		.login_box .mui-row {
+			line-height: 22px;
+			padding: 25px 0px 5px;
+		}
+		
+		.login_box .mui-row .mui-col-xs-10,
+		.login_box .mui-row .mui-col-xs-6,
+		.login_box .mui-row .mui-col-xs-4 {
+			border-bottom: #FFFFFF solid 1px;
+		}
+		
+		.login_box .mui-row .mui-col-xs-2 {
+			text-align: center;
+			color: #FFFFFF;
+		}
+		
+		input.login_register_input {
+			width: 100%;
+			border: none;
+			background: none;
+			color: #FFFFFF;
+			height: 22px;
+			line-height: 22px;
+		}
+		
+		input.login_register_input::-webkit-input-placeholder {
+			color: #FFFFFF;
+		}
+		
+		#get_capcha {
+			font-size: 12px;
+			color: #FFFFFF;
+			margin-bottom: 13px;
+			margin-top: -4px;
+			display: block;
+			background: #f9bbc0;
+			text-align: center;
+			padding: 4px 0px 2px;
+			border-radius: 6px;
+		}
+		
+		.my-mui-btn {
+			width: 100%;
+			height: 40px;
+			border: none;
+			color: #fd665d;
+		}
+		
+		.error_ts {
+			color: #680000;
+			padding-left: 20px;
+			height: 20px;
+			visibility: hidden;
+		}
+		
+		.my-mui-btn:active {
+			background: #ffdede!important;
+			color: #fd665d!important;
+		}
+	</style>
 
-	<body>
-		
-		<div class="mui-content"  style="background: #FFFFFF;">
-              
-              <input type="text"  />
-               <input type="button" id="get_capcha"  class="mui-btn-success" value="获取验证码" />
+	<body class="register_login_bk">
+		<header class="login-register-header  ">
+			<h1 class="mui-title" id="mui-title">登录</h1>
+			<a class="iconfont   icon-guanbi mui-icon  mui-pull-left  mui-action-back"></a>
+			<!--<a id="info" class="mui-icon-close mui-icon  mui-pull-left"></a>-->
+		</header>
+		<div class="mui-content">
+			<div class="login_box">
+				<div class="mui-row">
+					<div class="mui-col-xs-2">
+						<span class="">+86</span>
+					</div>
+					<div class="mui-col-xs-10">
+						<input id="phone" type="number" class="mui-input-clear login_register_input" placeholder="请输入手机号">
+					</div>
+				</div>
+				<div class="mui-row">
+					<div class="mui-col-xs-2">
+					</div>
+					<div class="mui-col-xs-10">
+						<input id="password" type="password" class="mui-input-clear login_register_input" placeholder="请输入密码">
+					</div>
+				</div>
+				<div class="mui-row">
+					<div class="mui-col-xs-2">
+					</div>
+					<div class="mui-col-xs-6">
+						<input id="capcha" type="number" class="mui-input-clear login_register_input" placeholder="请输入验证码">
+					</div>
+					<div class="mui-col-xs-4">
+						<a id="get_capcha">获取验证码</a>
+					</div>
+				</div>
+				<div class="mui-blank-30"></div>
+				<p class="error_ts" id="error_ts"></p>
+				<div class="mui-blank-20"></div>
+				<button type="button" class="mui-btn my-mui-btn" id="loginbtn">注册</button>
+			</div>
+
 		</div>
-		
+
 	</body>
 	<script src="../js/mui.min.js"></script>
 	<script>
 		mui.init()
+		var phone = document.getElementById('phone');
+		var password = document.getElementById('password');
+		var errorts = document.getElementById('error_ts');
+		var capcha = document.getElementById('capcha');
+		var loginbtn = document.getElementById('loginbtn');
+		//手机号验证方法
+		function valitemes() {
+			var reg = new RegExp("^[1][0-9]{10}$")
+			var phone_val = phone.value,
+				passowrd_val = password.value,
+				capcha_val = capcha.value
+			if (phone_val == '' && passowrd_val == '') {
+				innerError("请输入手机号或登录密码")
+				return false
+			} else if (capcha_val == "") {
+				innerError("请输入验证码")
+			} else if (!reg.test(phone_val)) {
+				innerError("请输入正确的手机号码")
+				return false
+			} else if (passowrd_val.length < 6 || passowrd_val.length > 13) {
+				innerError("请设置范围在6-12位的密码")
+			} else {
+				errorts.style.visibility = "hidden"
+				return true
+			}
+		}
+
+		function innerError(text) {
+			errorts.innerHTML = text;
+			errorts.style.visibility = "visible"
+		}
+		var cantap = true;
 		//获得短信验证码
-       function getCapCha(){
-       	   mui.ajax('http://api.mastergolf.cn/v1/',{
-       	   	 data:{
-       	   	 	phone:'13120362961'
-       	   	 },
-       	   	 type:'get',
-       	   	 success:function(data){
-       	   	 	return true
-       	   	 },
-       	   	 error:function(){
-       	   	 	
-       	   	    return false
-       	   	 }
-       	   })
-        }
-      var  get_capcha_btn=document.getElementById('get_capcha')
-      get_capcha_btn.addEventListener('tap',function(){
-      	 getCapCha()
-      },false)
+		function getCapCha() {
+			var reg = new RegExp("^[1][0-9]{10}$")
+			var phone_val = phone.value
+			if (!reg.test(phone_val)) {
+				innerError("请输入正确的手机号码")
+				return false
+			} else {
+				errorts.style.visibility = "hidden"
+			}
+			mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/send_capcha.json', {
+				data: {
+					phone: '13120362961'
+				},
+				type: 'post',
+				success: function(data) {
+					cantap = false
+					var seconds = 60
+					var timmer = setInterval(function() {
+						seconds--
+						get_capcha_btn.innerHTML = seconds + "s"
+						get_capcha_btn.style.backgroundColor = "#deb9bc"
+						if (seconds <= 0) {
+							cantap = true
+							get_capcha_btn.style.backgroundColor = "#f9bbc0"
+							get_capcha_btn.innerHTML = "获取验证码"
+							clearInterval(timmer)
+						}
+					}, 1000)
+					return true
+				},
+				error: function() {
+					mui.alert('获取失败请检查网络', '摄影圈', function() {
+						get_capcha_btn.innerHTML = "重新获取"
+					});
+					return false
+				}
+			})
+		}
+		var get_capcha_btn = document.getElementById('get_capcha')
+		get_capcha_btn.addEventListener('tap', function() {
+				if (cantap) {
+					getCapCha()
+				}
+			}, false)
+			//点击注册
+		mui.plusReady(function() {
+			loginbtn.addEventListener('tap', function() {
+				var valite = valitemes();
+				if (valite) {
+					mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/register.json', {
+						data: {
+							phone: phone.value,
+							password_md5: password.value,
+							captcha: capcha.value
+						},
+						type: 'post',
+						success: function(data) {
+							var code = data.code
+							if (code == 10000) {
+								mui.alert('注册成功', '摄影圈', function() {
+									plus.storage.setItem('islogin', 'islogin')
+//									mui.openWindow({
+//										id: 'page_PersonalCenter.html',
+//										url: 'page_PersonalCenter.html',
+//										styles: {
+//											top: '45px',
+//											bottom: '50px',
+//											bounce: 'vertical',
+//											scrollsToTop: true,
+//											hardwareAccelerated: true
+//										}
+//									})
+								});
+							} else {
+								alert("注册失败")
+							}
+						},
+						error: function() {
+							alert("信息提交失败")
+						}
+					})
+				}
+			}, false)
+		})
 	</script>
 
 </html>
