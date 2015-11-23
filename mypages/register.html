@@ -237,6 +237,7 @@
 			}, false)
 			//点击注册
 		mui.plusReady(function() {
+		
 			loginbtn.addEventListener('tap', function() {
 				var valite = valitemes();
 				if (valite) {
@@ -248,21 +249,15 @@
 						},
 						type: 'post',
 						success: function(data) {
+							cantap = false
 							var code = data.code
 							if (code == 10000) {
 								mui.alert('注册成功', '摄影圈', function() {
-									plus.storage.setItem('islogin', 'islogin')
-//									mui.openWindow({
-//										id: 'page_PersonalCenter.html',
-//										url: 'page_PersonalCenter.html',
-//										styles: {
-//											top: '45px',
-//											bottom: '50px',
-//											bounce: 'vertical',
-//											scrollsToTop: true,
-//											hardwareAccelerated: true
-//										}
-//									})
+									plus.storage.setItem('register_phone', phone.value)
+										//延时返回登陆页
+									setTimeout(function() {
+									     mui.back()
+									}, 300)
 								});
 							} else {
 								alert("注册失败")

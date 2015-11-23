@@ -16,7 +16,7 @@
 			background: url(../images/register_bk.jpg);
 			background-size: cover;
 		}
-	
+		
 		.login-register-header {
 			position: relative;
 			margin-top: 20px;
@@ -145,13 +145,23 @@
 		var password = document.getElementById('password');
 		var errorts = document.getElementById('error_ts');
 		var loginbtn = document.getElementById('loginbtn');
-
-		function vaildateLogin() {
-			loginbtn.addEventListener('tap', function() {
-				var valite = valitehone();
+		//		function vaildateLogin() {
+		loginbtn.addEventListener('tap', function() {
+				//				var valite = valitehone();
+				plus.storage.setItem('islogin', 'islogin')
+					//				plus.webview.currentWebview().close('slide-out-right', '300', function() {
+					//					alert("ss")
+					//				})
+				var center = plus.webview.getWebviewById('page_PersonalCenter.html');
+				center.evalJS('checklogin()')
+				var old_back = mui.back;
+				mui.back = function() {
+					//执行mui封装好的窗口关闭逻辑；
+					old_back();
+				}
+				old_back();
 			}, false)
-		}
-		//手机号验证方法
+			//手机号验证方法
 		function valitehone() {
 			var reg = new RegExp("^[1][0-9]{10}$")
 			var phone_val = phone.value,
@@ -171,22 +181,23 @@
 		vaildateLogin()
 			///////////////////////////////////////////////////////////////////////进入注册页面
 		mui.plusReady(function() {
-			mui('header').on('tap', '#register', function() {
-				var href = this.getAttribute('href')
-				mui.openWindow({
-					id: href,
-					url: href,
-					show: {
-						autoShow: true,
-						aniShow: 'slide-in-right',
-						duration: '300'
-					},
-					waiting: {
-						autoShow: false
-					}
+				mui('header').on('tap', '#register', function() {
+					var href = this.getAttribute('href')
+					mui.openWindow({
+						id: href,
+						url: href,
+						show: {
+							autoShow: true,
+							aniShow: 'slide-in-right',
+							duration: '300'
+						},
+						waiting: {
+							autoShow: false
+						}
+					})
 				})
 			})
-		})
+			//////////////////////////////////////////////////////////////如果本地存储中已经有用户用于注册的电话号码，那么自动填充注册的电话号码
 	</script>
 
 </html>

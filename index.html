@@ -143,7 +143,6 @@
 			//选项卡点击事件
 			mui('.mui-bar-tab').on('tap', 'a', function(e) {
 				var	islogin = plus.storage.getItem('islogin')
-				alert(islogin)
 				var _this=this
 				var _index = this.getAttribute('data-index')
 				var tab_index = plus.storage.getItem('tab_index');
@@ -153,33 +152,20 @@
 				if (targetTab == activeTab) {
 					return;
 				}
-				//个人中心判断是是否登陆状态 未登录则跳转到登陆据界面
-				if (islogin == 'islogin' && targetTab == 'page_PersonalCenter.html') {
-					
-					mui.openWindow({
-						url: 'mypages/login.html',
-						id: 'mypages/login',
-						styles: {
-							top: '0px', //新页面顶部位置
-							bottom: '0px', //新页面底部位置
-						},
-						show: {
-							autoShow: true,
-							aniShow: 'slide-in-right',
-							duration: '300'
-						},
-						waiting: {
-						autoShow: false
-					}
-					})
-				//登陆状态返回时 清除activa 样式 必须这样写才生效
-				setTimeout(function(){
-			      _this.classList.remove('mui-active')
-			      document.querySelectorAll('.mui-tab-item')[tab_index].setAttribute('class','mui-tab-item mui-active')
-				},0)
+		
+//				//登陆状态返回时 清除activa 样式 必须这样写才生效
+//				setTimeout(function(){
+//					if(islogin!="islogin"){
+//			      _this.classList.remove('mui-active')
+//			      document.querySelectorAll('.mui-tab-item')[tab_index].setAttribute('class','mui-tab-item mui-active')
+//			     }else{
+//			      	   _this.tap()
+////			      	  document.querySelectorAll('.mui-tab-item')[2].setAttribute('class','mui-tab-item mui-active')
+//			      }
+//				},20)
 				
 					
-				}else{
+				else{
 				
 				//先隐藏当前的
 				if (tab_index <= _index) {
