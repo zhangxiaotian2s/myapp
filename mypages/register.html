@@ -53,7 +53,6 @@
 		}
 		
 		.login_box .mui-row {
-			line-height: 22px;
 			padding: 25px 0px 5px;
 		}
 		
@@ -65,6 +64,7 @@
 		
 		.login_box .mui-row .mui-col-xs-2 {
 			text-align: center;
+			line-height: 40px;
 			color: #FFFFFF;
 		}
 		
@@ -73,8 +73,8 @@
 			border: none;
 			background: none;
 			color: #FFFFFF;
-			height: 22px;
 			line-height: 22px;
+			font-size: 18px;
 		}
 		
 		input.login_register_input::-webkit-input-placeholder {
@@ -84,12 +84,12 @@
 		#get_capcha {
 			font-size: 12px;
 			color: #FFFFFF;
-			margin-bottom: 13px;
-			margin-top: -4px;
+			margin-bottom: 21px;
+			line-height: 30px;
 			display: block;
 			background: #f9bbc0;
 			text-align: center;
-			padding: 4px 0px 2px;
+			padding: 2px 4px;
 			border-radius: 6px;
 		}
 		
@@ -202,45 +202,45 @@
 			}
 			mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/send_capcha.json', {
 				data: {
-					phone: '13120362961'
+					phone: phone.value
 				},
 				type: 'post',
 				success: function(data) {
 					cantap = false
 					var seconds = 60
 					var timmer = setInterval(function() {
-						seconds--
-						get_capcha_btn.innerHTML = seconds + "s"
-						get_capcha_btn.style.backgroundColor = "#deb9bc"
+						seconds--;
+						get_capcha_btn.innerHTML = seconds + "s";
+						get_capcha_btn.style.backgroundColor = "#deb9bc";
 						if (seconds <= 0) {
-							cantap = true
-							get_capcha_btn.style.backgroundColor = "#f9bbc0"
-							get_capcha_btn.innerHTML = "获取验证码"
-							clearInterval(timmer)
+							cantap = true;
+							get_capcha_btn.style.backgroundColor = "#f9bbc0";
+							get_capcha_btn.innerHTML = "获取验证码";
+							clearInterval(timmer);
 						}
 					}, 1000)
 					return true
 				},
 				error: function() {
 					mui.alert('获取失败请检查网络', '摄影圈', function() {
-						get_capcha_btn.innerHTML = "重新获取"
+						get_capcha_btn.innerHTML = "重新获取";
 					});
-					return false
+					return false;
 				}
 			})
 		}
 		var get_capcha_btn = document.getElementById('get_capcha')
 		get_capcha_btn.addEventListener('tap', function() {
-				if (cantap) {
-					getCapCha()
-				}
-			}, false)
-			//点击注册
+			if (cantap) {
+				getCapCha();
+			}
+		}, false)
 		mui.plusReady(function() {
-		
+			//点击注册
 			loginbtn.addEventListener('tap', function() {
 				var valite = valitemes();
 				if (valite) {
+					cantap = false
 					mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/register.json', {
 						data: {
 							phone: phone.value,
@@ -249,26 +249,29 @@
 						},
 						type: 'post',
 						success: function(data) {
-							cantap = false
-							var code = data.code
+							var code = data.code;
 							if (code == 10000) {
 								mui.alert('注册成功', '摄影圈', function() {
 									plus.storage.setItem('register_phone', phone.value)
 										//延时返回登陆页
+									var loginpage = plus.webview.getWebviewById('mypages/login.html');
 									setTimeout(function() {
-									     mui.back()
+										loginpage.evalJS('autoInsterPhoneNumber()');
+										mui.back();
 									}, 300)
 								});
 							} else {
-								alert("注册失败")
+								cantap = true;
+								mui.alert('注册失败', '摄影圈');
 							}
 						},
 						error: function() {
-							alert("信息提交失败")
+							cantap = true;
+							mui.alert('信息提交失败', '摄影圈');
 						}
 					})
 				}
-			}, false)
+			}, false);
 		})
 	</script>
 

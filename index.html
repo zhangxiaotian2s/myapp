@@ -43,7 +43,6 @@
 			
 			.mui-bar-nav a {
 				color: #fe6f5f;
-				;
 			}
 		</style>
 	</head>
@@ -77,16 +76,14 @@
 				main = null;
 			var showMenu = false;
 			mui.init({
-				swipeBack: false,
-				statusBarBackground: '#FFFFFF',
+				swipeBack: true,
 				gestureConfig: {
 					doubletap: true
 				}
 			});
 			//敲击顶部导航，内容区回到顶部
 			document.querySelector('header').addEventListener('doubletap', function() {
-				//				main.children()[0].styles.scrollsToTop=true;
-				main.children()[0].evalJS('mui.scrollTo(0, 100)');
+			   	main.children()[0].evalJS('mui.scrollTo(0, 100)');
 			});
 			//首页返回键处理
 			//处理逻辑：1秒内，连续两次按返回键，则退出应用；
@@ -117,24 +114,41 @@
 				scrollsToTop: true,
 				hardwareAccelerated: true
 			};
+			//个人中心页面定制样式
+			var subpage_style3 = {
+				top: '0px',
+				bottom: '50px',
+				bounce: 'none',
+				scrollsToTop: true,
+				hardwareAccelerated: true
+			};
 			//创建子页面，首个选项卡页面显示，其它均隐藏；
 			mui.plusReady(function() {
-			    plus.navigator.setFullscreen(false);
+				plus.navigator.setFullscreen(false);
 				plus.navigator.setStatusBarBackground("#ffffff");
 				main = plus.webview.currentWebview();
-				for (i = 0; i < 3; i++) {
-					var sub = mui.preload({
-						url: subpages[i],
-						id: subpages[i],
-						styles: subpage_style,
-					})
-					if (i > 0) {
-						sub.hide()
+				var sub1 = mui.preload({
+					url: subpages[0],
+					id: subpages[0],
+					styles: subpage_style
+				})
+				main.append(sub1);
+				//延时1秒再预加载
+				setTimeout(function() {
+					for (i = 1; i < 3; i++) {
+						if (i == 2) {
+							subpage_style = subpage_style3;
+						}
+						var sub = mui.preload({
+							url: subpages[i],
+							id: subpages[i],
+							styles: subpage_style
+						})
+						sub.hide();
+						main.append(sub);
 					}
-					main.append(sub);
-				}
+				}, 1000)
 				plus.storage.setItem('tab_index', '0')
-			
 			});
 			//创建一个指定openWindow的方法
 			var activeTab = subpages[0];
@@ -142,50 +156,37 @@
 			var mui_title = document.getElementById('mui-title');
 			//选项卡点击事件
 			mui('.mui-bar-tab').on('tap', 'a', function(e) {
-				var	islogin = plus.storage.getItem('islogin')
-				var _this=this
-				var _index = this.getAttribute('data-index')
+				var _this = this;
+				var _index = this.getAttribute('data-index');
 				var tab_index = plus.storage.getItem('tab_index');
 				var targetTab = this.getAttribute('href');
 				var title = this.getAttribute('data-title');
+				if(_index==2){
+					plus.navigator.setStatusBarBackground('#ed6b5d')
+				}else{
+				plus.navigator.setStatusBarBackground('#ffffff')	
+				}
 				//打开页面
 				if (targetTab == activeTab) {
 					return;
-				}
-		
-//				//登陆状态返回时 清除activa 样式 必须这样写才生效
-//				setTimeout(function(){
-//					if(islogin!="islogin"){
-//			      _this.classList.remove('mui-active')
-//			      document.querySelectorAll('.mui-tab-item')[tab_index].setAttribute('class','mui-tab-item mui-active')
-//			     }else{
-//			      	   _this.tap()
-////			      	  document.querySelectorAll('.mui-tab-item')[2].setAttribute('class','mui-tab-item mui-active')
-//			      }
-//				},20)
-				
-					
-				else{
-				
-				//先隐藏当前的
-				if (tab_index <= _index) {
-					plus.webview.hide(activeTab, 'slide-out-left', 400, function() {});
-					//再显示目标
-					plus.webview.show(targetTab, 'slide-in-right', 400, function() {
-						mui_title.innerText = title
-					});
 				} else {
-					plus.webview.hide(activeTab, 'slide-out-right', 400, function() {});
-					//再显示目标
-					plus.webview.show(targetTab, 'slide-in-left', 400, function() {
-						mui_title.innerText = title
-					});
+					//先隐藏当前的
+					if (tab_index <= _index) {
+						plus.webview.hide(activeTab, 'slide-out-left', 400, function() {});
+						//再显示目标
+						plus.webview.show(targetTab, 'slide-in-right', 400, function() {
+							mui_title.innerText = title;
+						});
+					} else {
+						plus.webview.hide(activeTab, 'slide-out-right', 400, function() {});
+						//再显示目标
+						plus.webview.show(targetTab, 'slide-in-left', 400, function() {
+							mui_title.innerText = title;
+						});
+					}
+					plus.storage.setItem('tab_index', _index)
+					activeTab = targetTab;
 				}
-				plus.storage.setItem('tab_index', _index)
-				activeTab = targetTab;
-				}
-			
-				
 			});
 		</script>
 	</body>

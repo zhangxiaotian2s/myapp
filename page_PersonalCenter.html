@@ -8,20 +8,100 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			.person_head {
+				background: #ed6b5d;
+				padding-bottom: 20px;
+			}
+			
+			.person_head_img {
+				width: 100px;
+				height: 100px;
+				border: #FFFFFF solid 3px;
+				overflow: hidden;
+				margin: auto;
+				border-radius: 50px;
+			}
+			
+			.person_head_img img {}
+			
+			.person_head p {
+				text-align: center;
+				font-size: 18px;
+				color: #FFFFFF;
+			}
+			
+			.mui-table-view-cell>a:not(.mui-btn) {
+				padding: 13px 15px;
+				color: #616161;
+			}
+			
+			.mui-table-view-cell>a>span {
+				font-size: 18px;
+				display: block;
+				float: left;
+				line-height: 22px;
+			}
+			
+			.span_number {
+				position: absolute;
+				right: 40px;
+				top: 13px;
+				font-size: 14px;
+				color: #cdcdcd;
+			}
+		</style>
 	</head>
 
 	<body>
-		<div class="mui-content">
-			<a id="login" style="padding: 30px; display: block;">2222</a>
+		<div class="mui-content" style=" background: #f6f6f6;">
+			<div class="person_head mui-row" id="person_head">
+				<div class="mui-blank-20"></div>
+				<div class="person_head_img">
+					<img src="images/muwu.jpg" id="head_img">
+				</div>
+				<div class="mui-blank-10"></div>
+				<p>登陆/注册</p>
+			</div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right"><span class="mui-icon mui-icon-star"></span>&nbsp;&nbsp;我的收藏</a>
+					<span class="span_number">22</span>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right"><span class="mui-icon mui-icon-contact"></span>&nbsp;&nbsp;我要成为会员</a>
+				</li>
+
+			</ul>
+			<div class="mui-blank-20"></div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right"><span class="mui-icon mui-icon-compose"></span>&nbsp;&nbsp;给摄影圈提意见</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right"><span class="mui-icon mui-icon-info"></span>&nbsp;&nbsp;关于</a>
+				</li>
+
+			</ul>
+
 		</div>
-		<script type="text/javascript" src="js/mui.min.js" ></script>
+		<script type="text/javascript" src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init()
-			var login=document.getElementById('login')
+			var person_head = document.getElementById('person_head')
 			mui.plusReady(function() {
-			checklogin()
+				checklogin()
+				setHeadImgStyle()
 			})
-			login.addEventListener('tap', function() {
+			person_head.addEventListener('tap', function() {
+				personHeadTap()
+			}, false)
+
+			function personHeadTap() {
+				var islogin = checklogin()
+				if (islogin) {
+					//已经存储登陆信息的时候
+				} else {
 					mui.openWindow({
 						url: 'mypages/login.html',
 						id: 'mypages/login.html',
@@ -32,19 +112,37 @@
 						show: {
 							autoShow: true,
 							aniShow: 'slide-in-right',
-							duration: '300'
+							duration: '300',
 						},
 						waiting: {
-							autoShow: false
+							autoShow: true
 						}
 					})
-				}, false)	
-			function checklogin(){
-			var islogin=	plus.storage.getItem('islogin')
-				alert(islogin)
+				}
 			}
-			
-			
+
+			function checklogin() {
+				var islogin = plus.storage.getItem('userData');
+				 
+				if(islogin==undefined||islogin==""){
+					return false
+				}else{
+					return true
+				}
+			}
+			//控制头像尺寸
+			function setHeadImgStyle() {
+				var head_img = document.getElementById('head_img');
+				var _w = head_img.width;
+				var _h = head_img.height;
+				head_img.style.width = '100px'
+				if (head_img.height < 100) {
+					head_img.style.height = '100px'
+					head_img.style.width = (_w / _h) * 100 + 'px'
+				}
+			}
+			setHeadImgStyle();
+			//列表点击
 		</script>
 	</body>
 

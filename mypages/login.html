@@ -67,6 +67,7 @@
 		}
 		
 		.login_box .mui-row .mui-col-xs-2 {
+			padding-top: 8px;
 			text-align: center;
 			color: #FFFFFF;
 		}
@@ -76,7 +77,6 @@
 			border: none;
 			background: none;
 			color: #FFFFFF;
-			height: 22px;
 			line-height: 22px;
 		}
 		
@@ -105,10 +105,10 @@
 	</style>
 
 	<body class="register_login_bk">
-		<header class="login-register-header  ">
+		<header class="login-register-header">
 			<h1 class="mui-title" id="mui-title">登录</h1>
 			<a class="iconfont   icon-guanbi mui-icon  mui-pull-left  mui-action-back"></a>
-			<a id="register" href="register.html" class=" mui-pull-right">注册</a>
+			<a id="register" class=" mui-pull-right">注册</a>
 			<!--<a id="info" class="mui-icon-close mui-icon  mui-pull-left"></a>-->
 		</header>
 
@@ -145,59 +145,86 @@
 		var password = document.getElementById('password');
 		var errorts = document.getElementById('error_ts');
 		var loginbtn = document.getElementById('loginbtn');
-		//		function vaildateLogin() {
+		//////////登录按钮事件
 		loginbtn.addEventListener('tap', function() {
-				//				var valite = valitehone();
-				plus.storage.setItem('islogin', 'islogin')
-					//				plus.webview.currentWebview().close('slide-out-right', '300', function() {
-					//					alert("ss")
-					//				})
-				var center = plus.webview.getWebviewById('page_PersonalCenter.html');
-				center.evalJS('checklogin()')
-				var old_back = mui.back;
-				mui.back = function() {
-					//执行mui封装好的窗口关闭逻辑；
-					old_back();
+				var valite = valitehone();
+				if (valite == true) {
+					ajaxSubmitLogin()
 				}
-				old_back();
 			}, false)
-			//手机号验证方法
+		////////手机号验证方法
 		function valitehone() {
 			var reg = new RegExp("^[1][0-9]{10}$")
 			var phone_val = phone.value,
 				passowrd_val = password.value
 			if (phone_val == '' && passowrd_val == '') {
-				errorts.innerHTML = "请输入手机号和登录密码"
-				errorts.style.visibility = "visible"
+				innerError("请输入手机号和登录密码")
 				return false
-			} else if (!reg.test(phone_val)) {
-				errorts.innerHTML = "账号或密码错误，请重新输入";
+			}else if(passowrd_val==""){
+				innerError("请输入密码")
+				return false
+			}
+			else if (!reg.test(phone_val)) {
+				innerError("请重新输入正确的手机号码")
 				return false
 			} else {
 				errorts.style.visibility = "hidden"
 				return true
 			}
-		};
-		vaildateLogin()
-			///////////////////////////////////////////////////////////////////////进入注册页面
+		}
+		function innerError(text) {
+			errorts.innerHTML = text;
+			errorts.style.visibility = "visible"
+		}
+         ////////AJAX提交注册信息方法
+		function ajaxSubmitLogin() {
+			nwaiting = plus.nativeUI.showWaiting(); 
+			mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/login.json', {
+				data: {
+					phone: phone.value,
+					password_md5: password.value
+				},
+				type: 'post',
+				success: function(data) {
+					nwaiting.close()
+				     var userData=data.data
+				     console.log(userData.uuid)
+					var code = data.code
+				      plus.storage.setItem('userData',JSON.stringify(userData))
+					if (code == "10000") {
+						mui.alert('登陆成功', '摄影圈', function() {
+							var presoncenter = plus.webview.getWebviewById('page_PersonalCenter.html');
+							     //存储用户信息到本地
+							    presoncenter.evalJS('checklogin()')
+						     	mui.back()
+						})
+					}
+				}
+			})
+		}
+		////////////进入注册页面
 		mui.plusReady(function() {
-				mui('header').on('tap', '#register', function() {
-					var href = this.getAttribute('href')
-					mui.openWindow({
-						id: href,
-						url: href,
-						show: {
-							autoShow: true,
-							aniShow: 'slide-in-right',
-							duration: '300'
-						},
-						waiting: {
-							autoShow: false
-						}
-					})
+			//插入
+			autoInsterPhoneNumber()
+		})
+		
+		//////////点击注册按钮事件
+		mui('.login-register-header').on('tap', '#register', function() {
+				mui.openWindow({
+					id: 'register.html',
+					url: 'register.html',
+					styles: {
+						top: '0px',
+						bottom: '0px'
+					}
 				})
 			})
-			//////////////////////////////////////////////////////////////如果本地存储中已经有用户用于注册的电话号码，那么自动填充注册的电话号码
+		////////////如果本地存储中已经有用户用于注册的电话号码，那么自动填充注册的电话号码
+		function autoInsterPhoneNumber() {
+			var register_phone = plus.storage.getItem('register_phone')
+			if(register_phone!=null){
+			phone.value = register_phone
+			}
+		}
 	</script>
-
 </html>
