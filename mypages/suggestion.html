@@ -14,11 +14,13 @@
 				border-bottom: #ed6b5d solid 1px;
 				background: #FFFFFF;
 			}
+			
 			.mui-title {
 				font-size: 18px;
 			}
+			
 			.about_content {
-				padding: 20px;
+				padding: 20px 15px;
 			}
 			
 			.about_content h2,
@@ -32,33 +34,62 @@
 				line-height: 26px;
 				font-size: 14px;
 			}
+			
+			#submit_btn {
+				padding-top: 10px;
+				color: #ed6b5d;
+			}
+			
+			#suggestion_text {
+				height: 180px;
+				line-height: 30px;
+				border-radius: 20px;
+				font-size: 14px;
+				color: #646464;
+			}
+			
+			#suggestion_text:before {
+				  content: ""; 
+			}
 		</style>
 	</head>
 
 	<body style="	background: #FFFFFF;">
 		<header class="mui-bar mui-bar-nav">
-			<h1 class="mui-title" id="mui-title">关于</h1>
+			<h1 class="mui-title" id="mui-title">给摄影圈提建议</h1>
 			<a id="info" class="mui-action-back  iconfont   icon-fanhui mui-icon  mui-pull-left" style="color: #ed6b5d;"></a>
-			<!--<a id="info" class="mui-icon-close mui-icon  mui-pull-right" ></a>-->
+			<a id="submit_btn" class="mui-pull-right">提交</a>
 		</header>
 		<!--下拉刷新容器-->
 		<div class="mui-content about_content">
 			<div class="mui-blank-30"></div>
-			<h2 class="mui-text-center">摄影圈</h2>
-			<p class="mui-text-center">版本:<span id="version"></span></p>
-			<div class="mui-blank-20"></div>
-			<p>请问如何检测本地app的版本号？manifest.json里的参数可否获取。如何调用？请问如何检测本地app的版本号？manifest.json里的参数可否获取。如何调用？请问如何检测本地app的版本号？manifest.json里的参数可否获取。如何调用？请问如何检测本地app的版本号？manifest.json里的参数可否获取。如何调用？请问如何检测本地app的版本号？manifest.json里的参数可否获取。如何调用？</p>
+			<textarea id="suggestion_text" cols="6">请写下您的反馈意见，我们将不断为您改进!</textarea>
 		</div>
 	</body>
 	<script src="../js/mui.min.js"></script>
 	<script>
 		mui.init();
+		var text_ts = '请写下您的反馈意见，我们将不断为您改进!';
+		var suggestion_text = document.getElementById('suggestion_text')
 		mui.plusReady(function() {
 			//获取版本号
-			mui.getJSON("../manifest.json", null, function(data) {
-				document.getElementById('version').innerText = data.version.name
-			});
+		
 		})
+
+		
+		
+		suggestion_text.addEventListener('focus', function() {
+			var text_value=Trim(this.value)
+			if(text_value==text_ts){
+				this.value=""
+			}
+		}, false)
+		suggestion_text.addEventListener('blur', function() {
+				var text_value=Trim(this.value)
+				if(text_value==""){
+				this.value=text_ts
+			}
+		},false)
 			var old_back = mui.back;
 		mui.back = function() {
 			var personalcenter=plus.webview.getWebviewById('page_personalcenter.html')

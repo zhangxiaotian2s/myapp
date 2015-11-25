@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			.mui-bar-nav {
+				box-shadow: none;
+				border-bottom: #ed6b5d solid 1px;
+				background: #FFFFFF;
+			}
+			
+			.mui-title {
+				font-size: 18px;
+			}
+			
+			#submit_btn {
+				padding-top: 10px;
+				color: #ed6b5d;
+			}
+			
+			.my-mui-input-row {
+				width: 94%;
+				margin: auto;
+			}
+		</style>
+	</head>
+
+	<body style="	background: #f6f6f6;">
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title" id="mui-title">设置</h1>
+			<a id="info" class="mui-action-back  iconfont   icon-fanhui mui-icon  mui-pull-left" style="color: #ed6b5d;"></a>
+			<a id="submit_btn" class="mui-pull-right">提交</a>
+		</header>
+		<!--下拉刷新容器-->
+		<div class="mui-content " style="background: #f6f6f6;">
+			<div class="mui-blank-30"></div>
+			<div class="mui-input-row my-mui-input-row">
+				<input type="text" id="nickname_input" class="input-text mui-input-clear" placeholder="" />
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script>
+		mui.init();
+		var submit_btn = document.getElementById('submit_btn');
+		var nickname_input = document.getElementById('nickname_input');
+		mui.plusReady(function() {
+			var nickname = plus.storage.getItem('nickname');
+			nickname_input.setAttribute('placeholder', nickname)
+			submit_btn.addEventListener('tap', function() {
+				var new_nickname = Trim(nickname_input.value)
+				if (nickname == new_nickname || new_nickname == "") {
+					mui.back()
+				}else{
+					ajaxChangeNickname(new_nickname)
+				}
+			}, false)
+		})
+		function ajaxChangeNickname(newname){
+		var nativeWaiting=	plus.nativeUI.showWaiting()
+			var uuid=plus.storage.getItem('uuid')
+			var token=plus.storage.getItem('token')
+			mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/nickname.json',{
+				data:{
+					uuid:uuid,
+					token:token,
+					nickname:newname
+				},
+				timeout:10000,
+				type:'put',
+				success:function(data){
+					var code=data.code
+					  nativeWaiting.close()
+					if(code==10000){
+					 mui.alert('修改成功！','摄影圈',function(){
+					 	mui.back()
+					 })
+					}
+				},error:function(xhr){
+					nativeWaiting.close()
+						mui.alert('修改失败！','摄影圈',function(){
+					 })
+				}
+			})
+		}
+		
+	</script>
+
+</html>

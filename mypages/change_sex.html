@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			.mui-bar-nav {
+				box-shadow: none;
+				border-bottom: #ed6b5d solid 1px;
+				background: #FFFFFF;
+			}
+			
+			.mui-title {
+				font-size: 18px;
+			}
+			
+			#submit_btn {
+				padding-top: 10px;
+				color: #ed6b5d;
+			}
+			
+			.mui-card .mui-input-row {
+				padding: 10px;
+			}
+			
+			.mui-card .mui-input-row input {
+				top: 12px;
+			}
+			
+			.mui-card .mui-input-row:first-of-type {
+				border-bottom: #e0e0e0 solid 1px;
+			}
+		</style>
+	</head>
+
+	<body style="	background: #f6f6f6;">
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title" id="mui-title">设置</h1>
+			<a id="info" class="mui-action-back  iconfont   icon-fanhui mui-icon  mui-pull-left" style="color: #ed6b5d;"></a>
+			<a id="submit_btn" class="mui-pull-right">提交</a>
+		</header>
+		<div class="mui-content " style="background: #f6f6f6;">
+			<div class="mui-blank-30"></div>
+			<div class="mui-card">
+				<div class="mui-input-row mui-radio">
+					<label>男</label>
+					<input name="sex" type="radio" value="男" checked>
+				</div>
+				<div class="mui-input-row mui-radio">
+					<label>女</label>
+					<input name="sex" type="radio" value="男">
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script>
+		mui.init();
+		var submit_btn = document.getElementById('submit_btn');
+		var sexvalue = document.getElementsByName('sex')
+		mui.plusReady(function() {
+			submit_btn.addEventListener('tap', function() {
+				var _sexvalue=plus.storage.getItem('sex')
+				var _newsexvalue=sexValue()
+				if (_sexvalue == _newsexvalue || _sexvalue == "") {
+					mui.back()
+				} else {
+					ajaxChangeSex(_newsexvalue)
+				}
+			}, false)
+		})
+		function sexValue() {
+			for (var i = 0; i < sexvalue.length; i++) {
+				if(sexvalue[i].checked==true){
+					return sexvalue[i].value
+				}
+			}
+		}
+
+		function ajaxChangeSex(newsexvalue) {
+			var nativeWaiting = plus.nativeUI.showWaiting()
+			var uuid = plus.storage.getItem('uuid')
+			var token = plus.storage.getItem('token')
+			mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/gender.json', {
+				data: {
+					uuid: uuid,
+					token: token,
+					gender : newsexvalue
+				},
+				timeout: 10000,
+				type: 'put',
+				success: function(data) {
+					var code = data.code
+					nativeWaiting.close()
+					if (code == 10000) {
+						mui.alert('设置成功！', '摄影圈', function() {
+							mui.back()
+						})
+					}
+				},
+				error: function(xhr) {
+					nativeWaiting.close()
+					mui.alert('设置失败！', '摄影圈', function() {
+					})
+				}
+			})
+		}
+	</script>
+
+</html>

@@ -63,7 +63,7 @@
 				<span class="iconfont  icon-xinwendongtai" style="font-size: 28px;"></span>
 				<p>资讯</p>
 			</a>
-			<a class="mui-tab-item" href="page_PersonalCenter.html" data-title="个人中心" data-index='2'>
+			<a class="mui-tab-item" href="page_personalcenter.html" data-title="个人中心" data-index='2'>
 				<span class="iconfont icon-gerenzhongxin" style="font-size: 25px;"></span>
 				<p>我</p>
 			</a>
@@ -106,7 +106,7 @@
 					}
 				}
 			};
-			var subpages = ['page-photollist.html', 'page-newslist.html', 'page_PersonalCenter.html'];
+			var subpages = ['page-photollist.html', 'page-newslist.html', 'page_personalcenter.html'];
 			var subpage_style = {
 				top: '45px',
 				bottom: '50px',
@@ -155,7 +155,11 @@
 			var lastActiveTabs = new Array();
 			var mui_title = document.getElementById('mui-title');
 			//选项卡点击事件
+			var canTap=true
 			mui('.mui-bar-tab').on('tap', 'a', function(e) {
+				if(!canTap){
+					return
+				}
 				var _this = this;
 				var _index = this.getAttribute('data-index');
 				var tab_index = plus.storage.getItem('tab_index');
@@ -172,16 +176,18 @@
 				} else {
 					//先隐藏当前的
 					if (tab_index <= _index) {
-						plus.webview.hide(activeTab, 'slide-out-left', 400, function() {});
+						plus.webview.hide(activeTab, 'slide-out-left', 300, function() {});
 						//再显示目标
-						plus.webview.show(targetTab, 'slide-in-right', 400, function() {
+						plus.webview.show(targetTab, 'slide-in-right', 300, function() {
 							mui_title.innerText = title;
+							canTap=true
 						});
 					} else {
-						plus.webview.hide(activeTab, 'slide-out-right', 400, function() {});
+						plus.webview.hide(activeTab, 'slide-out-right', 300, function() {});
 						//再显示目标
-						plus.webview.show(targetTab, 'slide-in-left', 400, function() {
+						plus.webview.show(targetTab, 'slide-in-left', 300, function() {
 							mui_title.innerText = title;
+							canTap=true
 						});
 					}
 					plus.storage.setItem('tab_index', _index)

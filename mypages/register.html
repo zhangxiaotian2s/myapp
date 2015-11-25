@@ -237,10 +237,12 @@
 		}, false)
 		mui.plusReady(function() {
 			//点击注册
+			
 			loginbtn.addEventListener('tap', function() {
 				var valite = valitemes();
 				if (valite) {
 					cantap = false
+					var nativWaiting=plus.nativeUI.showWaiting()
 					mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/register.json', {
 						data: {
 							phone: phone.value,
@@ -250,6 +252,7 @@
 						type: 'post',
 						success: function(data) {
 							var code = data.code;
+							nativWaiting.close()
 							if (code == 10000) {
 								mui.alert('注册成功', '摄影圈', function() {
 									plus.storage.setItem('register_phone', phone.value)

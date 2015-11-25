@@ -152,7 +152,7 @@
 					ajaxSubmitLogin()
 				}
 			}, false)
-		////////手机号验证方法
+			////////手机号验证方法
 		function valitehone() {
 			var reg = new RegExp("^[1][0-9]{10}$")
 			var phone_val = phone.value,
@@ -160,11 +160,10 @@
 			if (phone_val == '' && passowrd_val == '') {
 				innerError("请输入手机号和登录密码")
 				return false
-			}else if(passowrd_val==""){
+			} else if (passowrd_val == "") {
 				innerError("请输入密码")
 				return false
-			}
-			else if (!reg.test(phone_val)) {
+			} else if (!reg.test(phone_val)) {
 				innerError("请重新输入正确的手机号码")
 				return false
 			} else {
@@ -172,13 +171,14 @@
 				return true
 			}
 		}
+
 		function innerError(text) {
 			errorts.innerHTML = text;
 			errorts.style.visibility = "visible"
 		}
-         ////////AJAX提交注册信息方法
+		////////AJAX提交注册信息方法
 		function ajaxSubmitLogin() {
-			nwaiting = plus.nativeUI.showWaiting(); 
+			nwaiting = plus.nativeUI.showWaiting();
 			mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/login.json', {
 				data: {
 					phone: phone.value,
@@ -187,16 +187,22 @@
 				type: 'post',
 				success: function(data) {
 					nwaiting.close()
-				     var userData=data.data
-				     console.log(userData.uuid)
+					var userData = data.data
 					var code = data.code
-				      plus.storage.setItem('userData',JSON.stringify(userData))
+						//存储用户信息到本地
+					plus.storage.setItem('islogin', 'true')
 					if (code == "10000") {
 						mui.alert('登陆成功', '摄影圈', function() {
-							var presoncenter = plus.webview.getWebviewById('page_PersonalCenter.html');
-							     //存储用户信息到本地
-							    presoncenter.evalJS('checklogin()')
-						     	mui.back()
+							var presoncenter = plus.webview.getWebviewById('page_personalcenter.html');
+							plus.storage.setItem('uuid', userData.uuid)
+							plus.storage.setItem('token', userData.token)
+							plus.storage.setItem('nickname', userData.nickname)
+							plus.storage.setItem('is_member',(userData.is_membership).toString())
+							plus.storage.setItem('favorites',(userData.favorites).toString())
+							plus.storage.setItem('headimg',userData.image)
+							presoncenter.evalJS('checklogin()')
+							presoncenter.evalJS('setUserMes()')
+							mui.back()
 						})
 					}
 				}
@@ -207,7 +213,6 @@
 			//插入
 			autoInsterPhoneNumber()
 		})
-		
 		//////////点击注册按钮事件
 		mui('.login-register-header').on('tap', '#register', function() {
 				mui.openWindow({
@@ -219,12 +224,13 @@
 					}
 				})
 			})
-		////////////如果本地存储中已经有用户用于注册的电话号码，那么自动填充注册的电话号码
+			////////////如果本地存储中已经有用户用于注册的电话号码，那么自动填充注册的电话号码
 		function autoInsterPhoneNumber() {
 			var register_phone = plus.storage.getItem('register_phone')
-			if(register_phone!=null){
-			phone.value = register_phone
+			if (register_phone != null) {
+				phone.value = register_phone
 			}
 		}
 	</script>
+
 </html>
