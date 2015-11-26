@@ -69,7 +69,7 @@
 			</div>
 			<div id="person_btn_list">
 				<ul class="mui-table-view">
-					<li class="mui-table-view-cell" id="mypages/news_favorites.html">
+					<li class="mui-table-view-cell" id="mypages/news_favorites.html" data-type="ispreload">
 						<a class="mui-navigate-right"><span class="mui-icon mui-icon-star"></span>&nbsp;&nbsp;我的收藏</a>
 						<span class="span_number" id="articals_collection_number"></span>
 					</li>
@@ -83,7 +83,7 @@
 					<li class="mui-table-view-cell" id="mypages/suggestion.html">
 						<a class="mui-navigate-right"><span class="mui-icon mui-icon-compose"></span>&nbsp;&nbsp;给摄影圈提意见</a>
 					</li>
-					<li class="mui-table-view-cell" id="mypages/about.html">
+					<li class="mui-table-view-cell" id="mypages/about.html"  data-type="ispreload">
 						<a class="mui-navigate-right"><span class="mui-icon mui-icon-info"></span>&nbsp;&nbsp;关于</a>
 					</li>
 				</ul>
@@ -104,14 +104,30 @@
 			var login_out = document.getElementById("login_out")
 			var islogin;
 			mui.plusReady(function() {
-				islogin = checklogin()
-					//如果已经登陆获取登录信息
-				if (islogin) {
-					setUserMes()
-				}
-				setHeadImgStyle()
-			})
-
+					islogin = checklogin()
+						//如果已经登陆获取登录信息
+					if (islogin) {
+						setUserMes()
+					}
+					setHeadImgStyle()
+				    //延时预加载
+				    setTimeout(function(){
+				    	setPreload()
+				    },500)
+					
+				})
+			  function setPreload(){
+			   mui.preload({
+			   	url:'mypages/news_favorites.html',
+			  	id:'mypages/news_favorites.html'
+			   })
+			   mui.preload({
+			   	url:'mypages/about.html',
+			  	id:'mypages/about.html'
+			   })
+			  }
+			
+				//预加载我的收藏
 			function checklogin() {
 				var _islogin = plus.storage.getItem('islogin');
 				if (_islogin == undefined || _islogin == "") {
@@ -125,9 +141,9 @@
 				var _nickname = plus.storage.getItem('nickname')
 				var _imgsrc = plus.storage.getItem('headimg')
 				var _ismember = plus.storage.getItem('is_member')
-				var _favorites=plus.storage.getItem('favorites')
+				var _favorites = plus.storage.getItem('favorites')
 				head_img.src = _imgsrc
-				if (_ismember=='true') {
+				if (_ismember == 'true') {
 					nickname.innerText = "会员 | " + _nickname
 				} else {
 					nickname.innerText = _nickname
@@ -207,10 +223,16 @@
 			//列表按钮的点击处理
 			mui('#person_btn_list').on('tap', 'li', function() {
 				var url = this.getAttribute('id')
+				var type=this.getAttribute('data-type')
 				if (islogin) {
 					//设置setStatusBarBackground
 					plus.navigator.setStatusBarBackground("#ffffff")
-					personOpenWindow(url)
+					//我的收藏与关于的页面的单独处理该页面使用预加载
+					if (type=='ispreload') {
+						plus.webview.show(url, 'slide-in-right', 300)
+					} else {
+						personOpenWindow(url)
+					}
 				} else {
 					openLogin()
 				}

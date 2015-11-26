@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title id="head_title">Hello MUI</title>
+		<meta name="description" content="" id="head_description" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			.mui-bar-nav {
+				box-shadow: none;
+				border-bottom: #ed6b5d solid 1px;
+				background: #FFFFFF;
+			}
+			
+			.mui-title {
+				font-size: 18px;
+			}
+			
+			#news_title {
+				padding: 5px 15px 0;
+				font-size: 20px;
+				text-align: left;
+				line-height: 24px;
+				color: #333333;
+				font-weight: normal;
+			}
+			
+			#news_time {
+				font-size: 14px;
+				color: #989898;
+				padding-left: 15px;
+				float: left;
+				margin-right: 20px;
+			}
+			
+			.news_content {
+				padding: 0px 15px;
+				margin-top: 0px;
+			}
+			
+			.news_content img {
+				display: block;
+				max-width: 100%;
+				margin: 10px auto;
+			}
+			
+			.news-shoucang,
+			.news-fx-wxhy,
+			.news-fx-wxpyq {
+				padding: 3px 5px;
+				border: #b9b9b9 solid 1px;
+				margin: 10px 15px;
+				float: left;
+				font-size: 14px;
+				border-radius: 15px;
+				color: #b9b9b9;
+				line-height: 22px;
+			}
+			
+			.news-shoucang i,
+			.news-fx-wxhy i,
+			.news-fx-wxpyq i {
+				font-style: normal;
+				margin-right: 10px;
+			}
+			
+			.news-shoucang span,
+			.news-fx-wxhy span,
+			.news-fx-wxpyq span {
+				display: block;
+				font-size: 17px;
+				float: left;
+				margin-top: 3px;
+				margin-right: 2px;
+			}
+			
+			.news-shoucang span.color-red {
+				color: #ed6b5d;
+			}
+			
+			.news-fx-wxhy,
+			.news-fx-wxpyq {
+				float: right;
+				margin-left: 0px;
+			}
+			
+			.news-fx-wxhy span {
+				color: #98c01b;
+			}
+			
+			.news-fx-wxpyq span {
+				color: #f1b053;
+			}
+			
+			#favoritesnumber {
+				font-style: normal;
+			}
+			
+			.mui-preview-indicator {
+				text-align: center;
+			}
+		</style>
+
+	</head>
+
+	<body style="background: #FFFFFF;">
+
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title" id="mui-title">资讯详情</h1>
+			<a id="info" class="mui-action-back  iconfont   icon-fanhui mui-icon  mui-pull-left" style="color: #ed6b5d;"></a>
+		</header>
+		<div class="mui-content" id="mui-content" style="background: #FFFFFF;">
+			<div class="news_title">
+				<h2 id="news_title"></h2>
+			</div>
+			<div class="mui-row">
+				<time id="news_time"></time>
+				<p id="news_author"></p>
+			</div>
+			<div class="mui-blank-10"></div>
+			<div class="news_content mui-content-padded" id="news_content">
+			</div>
+			<div class="mui-row">
+				<div class="news-shoucang" id="addmyfavorites"><span class="mui-icon mui-icon-star" id="favorites_star"></span><i id="favoritesnumber"></i></div>
+				<div class="news-fx-wxpyq"><span class="mui-icon mui-icon-pengyouquan"></span>朋友圈</div>
+				<div class="news-fx-wxhy"><span class="mui-icon mui-icon-weixin"></span>微信</div>
+			</div>
+
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/imgloading.js"></script>
+		<script src="../js/mui.zoom.js"></script>
+		<script src="../js/mui.previewimage.js"></script>
+		<script>
+			mui.init({
+				gestureConfig: {
+					doubletap: true
+				}
+			});
+			var nwaiting
+			var head_title = document.getElementById('head_title'),
+				head_summary = document.getElementById('head_description'),
+				news_title = document.getElementById('news_title'),
+				news_time = document.getElementById('news_time'),
+				news_author = document.getElementById('news_author'),
+				addmyfavorites = document.getElementById('addmyfavorites'),
+				favorites_star = document.getElementById('favorites_star'),
+				favoritesnumber = document.getElementById('favoritesnumber'),
+				news_content = document.getElementById('news_content');
+			mui.plusReady(function() {
+				nwaiting = plus.nativeUI.showWaiting(); //显示原生等待框
+				var self = plus.webview.currentWebview();
+				var news_uuid = self.uuid;
+				var user_uuid = self.user_uuid;
+				var token = plus.storage.getItem('token');
+				AjaxGetNewsContent(news_uuid, user_uuid)
+					//收藏的点击
+				addmyfavorites.addEventListener('tap', function() {
+					addMyFavorites(news_uuid, token, user_uuid)
+				}, false)
+			})
+			document.querySelector('header').addEventListener('doubletap', function() {
+				mui.scrollTo(0, 100)
+			});
+
+			function AjaxGetNewsContent(news_uuid, user_uuid) {
+				var url = 'http://sheying.development.mastergolf.cn/api/v1/article/item.json?uuid=' + news_uuid + '&user_uuid=' + user_uuid
+				mui.ajax(url, {
+					dataType: 'json',
+					type: 'get',
+					timeout: 5000,
+					success: function(data) {
+						//关闭显示框
+						var code = data.code
+						if (code == 10000) {
+							nwaiting.close();
+							newsBaseInfo(data.data)
+							var content = data.data.content
+							mui.previewImage({
+								footer: '<span class="mui-preview-indicator">232323</span>',
+								text:["H5拍照应用开发经历的那些坑儿1","H5拍照应用开发经历的那些坑儿2H5拍照应用开发经历的那些坑儿2H5拍照应用开发经历的那些坑儿2"]
+							})
+							for (i = 0; i < content.length; i++) {
+								if (content[i].type == 'text') {
+									insterNewsContent(content[i].content, 'text')
+								} else {
+									insterNewsContent(content[i].url, 'image')
+								}
+							}
+						}
+						var loadnow = new loadimg();
+						loadnow.scrolladd();
+						document.body.ontouchmove = function() {
+							loadnow.scrolladd();
+						}
+						window.onscroll = function() {
+							loadnow.scrolladd();
+						}
+					},
+					error: function() {
+						nwaiting.close();
+						mui.alert('内容获取失败', '摄影圈', function() {
+							mui.back()
+						})
+					}
+				})
+			}
+			//插入文章的基本信息
+			function newsBaseInfo(news) {
+				news_title.innerText = news.title
+				news_time.innerText = news.time
+				news_author.innerText = news.author
+				favoritesnumber.innerText = news.favorites
+			}
+			//插入文本内容
+			function insterNewsContent(content, type) {
+				if (type == 'text') {
+					var _html = '<p>' + content + '</p>'
+					news_content.innerHTML += _html
+				} else if (type == 'image') {
+					var img = new Image;
+					img.setAttribute('class', 'img-responsive  loadimg')
+					img.src = '../images/zwf1.jpg'
+					img.setAttribute('data-preview-src', '')
+					img.setAttribute('data-preview-group', '1')
+					img.onload = new function() {
+						img.setAttribute('data-src', content)
+						img.setAttribute('class', 'opacity-in img-responsive  loadimg')
+					}
+					news_content.appendChild(img)
+				}
+			}
+			///文章收藏的处理
+			function addMyFavorites(news_uuid, token, user_uuid) {
+				nwaiting = plus.nativeUI.showWaiting();
+				mui.ajax('http://sheying.development.mastergolf.cn/api/v1/article/favorite.json', {
+					data: {
+						uuid: news_uuid,
+						token: token,
+						user_uuid: user_uuid
+					},
+					type: 'post',
+					timeout: 1000,
+					success: function(data) {
+						nwaiting.close()
+						var code = data.code
+						if (code == 10000) {
+							mui.alert('收藏成功！', '摄影圈', function() {
+								favorites_star.setAttribute('class', 'mui-icon mui-icon-star-filled color-red')
+							})
+						}
+					},
+					error: function() {
+						mui.alert('收藏成功！', '摄影圈', function() {})
+					}
+				})
+			}
+		</script>
+
+	</body>
+
+</html>

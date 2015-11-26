@@ -23,7 +23,7 @@
 			}
 			
 			.news_list li {
-				padding: 5px 7px;
+				padding: 5px 7px 8px;
 				border-bottom: #f1f1f1 solid 1px;
 				border-top: #f1f1f1 solid 1px;
 				overflow: hidden;
@@ -38,7 +38,9 @@
 			}
 			
 			.news_list li .list-img-box {
-				height: 65px;
+				height: 68px;
+				background:url(../images/zwf16_9.jpg) no-repeat center;
+				background-size:96% 96%;
 				overflow: hidden;
 			}
 			
@@ -171,6 +173,32 @@
 			news_favorites_list.innerHTML += _html
 			news_favorites_list.innerHTML += _html
 		}
+		//////////////////////////////////////////////////点击到内容页面的处理
+		function setArtiallListTap(news_uuid, user_uuid) {
+			mui.openWindow({
+				id: 'news.html',
+				url: 'news.html',
+				styles: {
+					scrollsToTop: true,
+					
+				},
+				show: {
+					duration: 300
+				},
+				extras: {
+					uuid: news_uuid,
+					user_uuid: user_uuid
+				},
+				waiting: {
+					autoShow: false
+				}
+			});
+		}
+		mui('#news_favorites_list').on('tap', 'li', function() {
+			var news_uuid = this.getAttribute('id');
+			var user_uuid=plus.storage.getItem('uuid')
+			setArtiallListTap(news_uuid,user_uuid)
+		})
 		var old_back = mui.back;
 		mui.back = function() {
 			var personalcenter = plus.webview.getWebviewById('page_personalcenter.html')

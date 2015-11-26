@@ -101,6 +101,12 @@
 				}
 			})
 		})
+			var old_back = mui.back;
+		mui.back = function() {
+			var personalcenter=plus.webview.getWebviewById('page_personalcenter.html')
+			personalcenter.evalJS("setBarBk()")
+		   	old_back();
+		}
 	</script>
 
 </html>

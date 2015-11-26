@@ -10,7 +10,8 @@
 			id: '__MUI_PREVIEWIMAGE',
 			zoom: true,
 			header: '<span class="mui-preview-indicator"></span>',
-			footer: ''
+			footer: '<span class="mui-preview-info">文章标题</span>',
+			text:["2222","fsfsdfsdf"],
 		}, options || {});
 		this.init();
 		this.initEvent();
@@ -31,6 +32,7 @@
 		this.loader = this.element.querySelector($.classSelector('.preview-loading'));
 		if (options.footer) {
 			this.element.querySelector($.classSelector('.preview-footer')).classList.remove($.className('hidden'));
+			this.footer=this.element.querySelector($.classSelector('.preview-footer'))
 		}
 		this.addImages();
 	};
@@ -79,8 +81,8 @@
 			var slideNumber = e.detail.slideNumber;
 			self.lastIndex = slideNumber;
 			self.indicator && (self.indicator.innerText = (slideNumber + 1) + '/' + self.currentGroup.length);
+			self.footer && (self.footer.innerText =self.options.text[slideNumber] );
 			self._loadItem(slideNumber);
-
 		});
 	};
 	proto.isAnimationing = function() {
@@ -314,6 +316,12 @@
 			}
 			itemHtml.push(itemStr.replace('{{className}}', className));
 		}
+		
+		plus.navigator.setFullscreen(true);
+	    plus.webview.currentWebview().setStyle({
+	    	'popGesture':'none'
+	    })
+//		plus.webview.swipeBack=false
 		this.scroller.innerHTML = itemHtml.join('');
 		this.element.style.display = 'block';
 		this.element.classList.add($.className('preview-in'));
@@ -321,6 +329,7 @@
 		this.element.offsetHeight;
 		$(this.element).slider().gotoItem(currentIndex, 0);
 		this.indicator && (this.indicator.innerText = (currentIndex + 1) + '/' + this.currentGroup.length);
+        this.footer && (this.footer.innerText =this.options.text[currentIndex] );
 		this._loadItem(currentIndex, true);
 	};
 	proto.openByGroup = function(index, group) {
@@ -343,6 +352,10 @@
 		}
 	};
 	proto.close = function(index, group) {
+		plus.navigator.setFullscreen(false);
+		plus.webview.currentWebview().setStyle({
+	    	'popGesture':'hide'
+	    })
 		this.element.classList.remove($.className('preview-in'));
 		this.element.classList.add($.className('preview-out'));
 		var itemEl = this.scroller.querySelector($.classSelector('.slider-item:nth-child(' + (this.lastIndex + 1) + ')'));
