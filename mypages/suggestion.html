@@ -49,7 +49,7 @@
 			}
 			
 			#suggestion_text:before {
-				  content: ""; 
+				content: "";
 			}
 		</style>
 	</head>
@@ -72,30 +72,20 @@
 		var text_ts = '请写下您的反馈意见，我们将不断为您改进!';
 		var suggestion_text = document.getElementById('suggestion_text')
 		mui.plusReady(function() {
-			//获取版本号
-		
+			
 		})
-
-		
-		
 		suggestion_text.addEventListener('focus', function() {
-			var text_value=Trim(this.value)
-			if(text_value==text_ts){
-				this.value=""
+			var text_value = Trim(this.value)
+			if (text_value == text_ts) {
+				this.value = ""
 			}
 		}, false)
 		suggestion_text.addEventListener('blur', function() {
-				var text_value=Trim(this.value)
-				if(text_value==""){
-				this.value=text_ts
+			var text_value = Trim(this.value)
+			if (text_value == "") {
+				this.value = text_ts
 			}
-		},false)
-			var old_back = mui.back;
-		mui.back = function() {
-			var personalcenter=plus.webview.getWebviewById('page_personalcenter.html')
-			personalcenter.evalJS("setBarBk()")
-		   	old_back();
-		}
+		}, false)
 	</script>
 
 </html>

@@ -14,9 +14,11 @@
 				border-bottom: #ed6b5d solid 1px;
 				background: #FFFFFF;
 			}
+			
 			.mui-title {
 				font-size: 18px;
 			}
+			
 			.about_content {
 				padding: 20px;
 			}
@@ -58,13 +60,11 @@
 			mui.getJSON("../manifest.json", null, function(data) {
 				document.getElementById('version').innerText = data.version.name
 			});
+			plus.webview.currentWebview().setStyle({
+				'popGesture': 'hide'
+			})
 		})
-			var old_back = mui.back;
-		mui.back = function() {
-			var personalcenter=plus.webview.getWebviewById('page_personalcenter.html')
-			personalcenter.evalJS("setBarBk()")
-		   	old_back();
-		}
+		
 	</script>
 
 </html>

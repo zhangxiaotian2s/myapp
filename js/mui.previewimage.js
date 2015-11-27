@@ -10,8 +10,8 @@
 			id: '__MUI_PREVIEWIMAGE',
 			zoom: true,
 			header: '<span class="mui-preview-indicator"></span>',
-			footer: '<span class="mui-preview-info">文章标题</span>',
-			text:["2222","fsfsdfsdf"],
+			footer: '',
+			text:'',
 		}, options || {});
 		this.init();
 		this.initEvent();
@@ -30,7 +30,7 @@
 		this.scroller = this.element.querySelector($.classSelector('.slider-group'));
 		this.indicator = this.element.querySelector($.classSelector('.preview-indicator'));
 		this.loader = this.element.querySelector($.classSelector('.preview-loading'));
-		if (options.footer) {
+		if (this.options.footer) {
 			this.element.querySelector($.classSelector('.preview-footer')).classList.remove($.className('hidden'));
 			this.footer=this.element.querySelector($.classSelector('.preview-footer'))
 		}
@@ -81,7 +81,9 @@
 			var slideNumber = e.detail.slideNumber;
 			self.lastIndex = slideNumber;
 			self.indicator && (self.indicator.innerText = (slideNumber + 1) + '/' + self.currentGroup.length);
-			self.footer && (self.footer.innerText =self.options.text[slideNumber] );
+			if(self.options.text.length>0){
+		    	self.footer && (self.footer.innerText =self.options.text[slideNumber] );
+			}
 			self._loadItem(slideNumber);
 		});
 	};
@@ -317,11 +319,10 @@
 			itemHtml.push(itemStr.replace('{{className}}', className));
 		}
 		
-		plus.navigator.setFullscreen(true);
+//		plus.navigator.setStatusBarBackground('#000000')
 	    plus.webview.currentWebview().setStyle({
 	    	'popGesture':'none'
 	    })
-//		plus.webview.swipeBack=false
 		this.scroller.innerHTML = itemHtml.join('');
 		this.element.style.display = 'block';
 		this.element.classList.add($.className('preview-in'));
@@ -329,7 +330,9 @@
 		this.element.offsetHeight;
 		$(this.element).slider().gotoItem(currentIndex, 0);
 		this.indicator && (this.indicator.innerText = (currentIndex + 1) + '/' + this.currentGroup.length);
+		if(this.options.text.length>0){
         this.footer && (this.footer.innerText =this.options.text[currentIndex] );
+       }
 		this._loadItem(currentIndex, true);
 	};
 	proto.openByGroup = function(index, group) {
@@ -352,7 +355,7 @@
 		}
 	};
 	proto.close = function(index, group) {
-		plus.navigator.setFullscreen(false);
+//		plus.navigator.setStatusBarBackground('#ffffff')
 		plus.webview.currentWebview().setStyle({
 	    	'popGesture':'hide'
 	    })
