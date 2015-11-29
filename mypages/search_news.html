@@ -171,6 +171,7 @@
 			})
 
 			function inserPageNewsList(keyword) {
+				var waiting=plus.nativeUI.showWaiting()
 				mui.ajax('http://sheying.development.mastergolf.cn/api/v1/article/search.json?key_word=' + keyword, {
 					data: {
 						key_word: keyword
@@ -178,6 +179,7 @@
 					type: 'get',
 					timeout: '10000',
 					success: function(data) {
+						waiting.close()
 						var code = data.code
 						insertNewsList(data)
 					},

@@ -163,6 +163,7 @@
 			})
 
 			function ajaxPhotoList(keyword) {
+						var waiting=plus.nativeUI.showWaiting()
 				mui.ajax('http://sheying.development.mastergolf.cn/api/v1/photograph/search.json?key_word=' + keyword, {
 					data: {
 						key_word: keyword
@@ -170,6 +171,7 @@
 					type: 'get',
 					timeout: '5000',
 					success: function(data) {
+						waiting.close()
 						var photolist = data.data.photoes;
 						for (i = 0; i < photolist.length; i++) {
 							insertPhotoList(photolist[i].images, photolist[i].uuid, photolist[i].title, photolist[i].author, photolist[i].comments, photolist[i].favorites)
