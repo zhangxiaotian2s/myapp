@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css"/>-->
+		<style>
+			.mui-bar-nav {
+				background: #FFFFFF;
+				border-bottom: #fe6f5f solid 1px;
+			}
+			
+			h5 {
+				margin: 5px 7px;
+			}
+			
+			.mui-bar-nav h1 {
+				font-size: 18px;
+				color: #000000;
+			}
+			
+			.mui-search input {}
+			
+			#submit_btn {
+				padding-top: 10px;
+				color: #ed6b5d;
+			}
+			
+			.photo-ul {
+				padding: 0px;
+				margin-top: -1px;
+			}
+			
+			.photo-ul li {
+				width: 100%;
+				margin: 0px auto 10px;
+				border: #e7e7e7 solid 1px;
+				list-style: none;
+				padding: 5px 0px;
+				background: #FFFFFF;
+				overflow: hidden;
+			}
+			
+			.photo-ul li h2 {
+				font-size: 17px;
+				font-weight: normal;
+				line-height: 22px;
+				padding-left: 20px;
+				color: #3C3C3C
+			}
+			
+			.mui-table-view-cell:after {
+				background: none;
+			}
+			
+			.photo-ul li .img-box {
+				background: url(images/zwf16_9.jpg);
+				background-size: cover;
+				height: 210px;
+				overflow: hidden;
+			}
+			
+			.photo-ul li img {
+				width: 100%;
+				margin: auto;
+			}
+			
+			.photo-ul li.mui-active {
+				background: #F2F2F2;
+			}
+			
+			.photo-ul li p {
+				font-size: 14px;
+				color: #d4d4d4;
+				padding-left: 18px;
+			}
+			
+			.img-number {
+				padding: 3px 15px;
+				border: #b9b9b9 solid 1px;
+				margin: 3px 0px 5px 10px;
+				font-size: 14px;
+				border-radius: 15px;
+				float: left;
+				color: #b9b9b9;
+				line-height: 22px;
+			}
+			
+			.img-xihuan {
+				padding: 3px 15px;
+				border: #b9b9b9 solid 1px;
+				margin: 3px 10px 5px 0px;
+				float: right;
+				font-size: 14px;
+				border-radius: 15px;
+				color: #b9b9b9;
+				line-height: 22px
+			}
+			
+			.img-xihuan span {
+				color: #ff6666;
+			}
+		</style>
+	</head>
+
+	<body style="background: #FFFFFF;">
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title" id="mui-title">影展搜索</h1>
+			<a id="info" class="mui-action-back   mui-icon-close mui-icon  mui-pull-left" style="color: #ed6b5d;"></a>
+			<a id="submit_btn" class="mui-pull-right">搜索</a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-blank-10"></div>
+			<div class="mui-row" style="padding: 0px 10px;">
+
+				<div class="mui-input-row mui-search ">
+					<input id="search" type="search" class="mui-input-speech mui-input-clear" placeholder="输入关键字">
+				</div>
+				<ul id="photo_list" class="photo-ul">
+
+				</ul>
+
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			var photo_list = document.getElementById('photo_list')
+			var seachinput=document.getElementById('search');
+			var searchbtn=document.getElementById('submit_btn')
+			//语音识别完成事件
+			seachinput.addEventListener('recognized', function(e) {
+				photo_list.innerHTML=""
+				ajaxPhotoList(e.detail.value)
+			});
+			searchbtn.addEventListener('tap',function(){
+					photo_list.innerHTML=""
+					var keyword=seachinput.value
+					if(keyword==''){
+						return
+					}
+					ajaxPhotoList(keyword)
+					
+			})
+			seachinput.addEventListener('keydown', function(e) {
+				var key = e.which
+				if (key == 13) {
+					var keyword=seachinput.value
+					photo_list.innerHTML=""
+					ajaxPhotoList(keyword)
+					
+				}
+			})
+
+			function ajaxPhotoList(keyword) {
+				mui.ajax('http://sheying.development.mastergolf.cn/api/v1/photograph/search.json?key_word=' + keyword, {
+					data: {
+						key_word: keyword
+					},
+					type: 'get',
+					timeout: '5000',
+					success: function(data) {
+						var photolist = data.data.photoes;
+						for (i = 0; i < photolist.length; i++) {
+							insertPhotoList(photolist[i].images, photolist[i].uuid, photolist[i].title, photolist[i].author, photolist[i].comments, photolist[i].favorites)
+						}
+					},
+					error: function() {}
+				})
+			}
+			var photo_list = document.getElementById('photo_list')
+
+			function insertPhotoList(imgsrc, uuid, title, author, comments, favorites) {
+				var _li = document.createElement('li');
+				_li.setAttribute('class', 'mui-table-view-cell');
+				_li.setAttribute('open-type', 'common');
+				_li.setAttribute('data-uuid', uuid);
+				var _div = document.createElement('div')
+				_div.setAttribute('class', 'img-box')
+				var _h2 = document.createElement('h2')
+				_h2.innerText = ' 《' + title + '》';
+				var _p = document.createElement('p')
+				_p.innerText = '创作者:' + author;
+				var _img = new Image;
+				_img.src = imgsrc
+				_div.appendChild(_img);
+				_img.setAttribute('class', 'opacity-in')
+				_li.appendChild(_div);
+				_li.appendChild(_h2);
+				_li.appendChild(_p);
+				var _html_img_number = '<div class="img-number"><span class="iconfont  icon-tupian"></span>' + comments + '</div>';
+				var _html_img_xihuan = '<div class="img-xihuan"><span class="iconfont  icon-xin"></span>' + favorites + '</div>';
+				_li.innerHTML += _html_img_number;
+				_li.innerHTML += _html_img_xihuan;
+				photo_list.appendChild(_li);
+			}
+			//	主列表点击事件
+			mui('#photo_list').on('tap', 'li', function() {
+				var type = this.getAttribute("open-type");
+				var uuid = this.getAttribute('data-uuid');
+				//不使用父子模板方案的页面
+				if (type == "common") {
+					var webview_style = {
+						popGesture: "close",
+						blockNetworkImage: true,
+						scrollsToTop: true
+					};
+					mui.openWindow({
+						id: 'photo.html',
+						url: 'photo.html',
+						styles: {
+							hardwareAccelerated: true,
+							scrollsToTop: true,
+						},
+						show: {
+							autoShow: true,
+							duration: 300
+						},
+						extras: {
+							uuid: uuid
+						},
+						createNew: false,
+						waiting: {
+							autoShow: false
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+
+</html>

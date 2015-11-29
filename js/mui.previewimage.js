@@ -1,6 +1,6 @@
 (function($, window) {
 
-	var template = '<div id="{{id}}" class="mui-slider mui-preview-image mui-fullscreen"><div class="mui-preview-header">{{header}}</div><div class="mui-slider-group"></div><div class="mui-preview-footer mui-hidden">{{footer}}</div><div class="mui-preview-loading"><span class="mui-spinner mui-spinner-white"></span></div></div>';
+	var template = '<div id="{{id}}" class="mui-slider mui-preview-image mui-fullscreen"><div class="mui-preview-header my-mui-previewimage-header">{{header}}</div><div class="mui-slider-group"></div><div class="mui-preview-footer mui-hidden">{{footer}}</div><div class="previewimg_foot_mes"><h1 class="previewimg-footor-title" style=""></h1><p class="previewimg_des"></p></div><div class="previewimg_foot mui-hidden"><div class="news-shoucang" id="zhuanfa" style="float:right;padding: 3px 10px; margin:5px 10px 0px 0px ;"><span class="mui-icon mui-icon-redo" ></span>转发</div><div class="mui-shoucang my-souchangstyle photolike" ><span class="iconfont  icon-xin " ></span>喜欢</div></div ><div class="mui-preview-loading"><span class="mui-spinner mui-spinner-white"></span></div></div>';
 	var itemTemplate = '<div class="mui-slider-item mui-zoom-wrapper {{className}}"><div class="mui-zoom-scroller"><img src="{{src}}" data-preview-lazyload="{{lazyload}}" style="{{style}}" class="mui-zoom"></div></div>';
 	var defaultGroupName = '__DEFAULT';
 	var div = document.createElement('div');
@@ -9,13 +9,20 @@
 		this.options = $.extend(true, {
 			id: '__MUI_PREVIEWIMAGE',
 			zoom: true,
-			header: '<span class="mui-preview-indicator"></span>',
-			footer: '',
-			text:'',
+			header: '<h1 class="mui-title mui-preview-indicator" id="mui-title"></h1>',
+			title: '2',
+			des: '',
+			bottom: false,
+			like_hasup: false,
+			like_url: '',
+			uuid: '',
+			user_uuid: '',
+			token: ''
 		}, options || {});
 		this.init();
 		this.initEvent();
 	};
+
 	var proto = PreviewImage.prototype;
 	proto.init = function() {
 		var options = this.options;
@@ -30,10 +37,21 @@
 		this.scroller = this.element.querySelector($.classSelector('.slider-group'));
 		this.indicator = this.element.querySelector($.classSelector('.preview-indicator'));
 		this.loader = this.element.querySelector($.classSelector('.preview-loading'));
+		if (this.options.title) {
+			this.title = this.element.querySelector('.previewimg-footor-title')
+		}
+		if (this.options.des) {
+			this.des = this.element.querySelector('.previewimg_des')
+		}
+		if (this.options.bottom) {
+			this.element.querySelector('.previewimg_foot').classList.remove('mui-hidden');
+			this.phpotolike = this.element.querySelector('.photolike')
+			this.zhuanfa=this.element.querySelector('#zhuanfa')
+		}
 		if (this.options.footer) {
 			this.element.querySelector($.classSelector('.preview-footer')).classList.remove($.className('hidden'));
-			this.footer=this.element.querySelector($.classSelector('.preview-footer'))
 		}
+		this.foottitle = this.element.querySelector($.classSelector('.foot_title'))
 		this.addImages();
 	};
 	proto.initEvent = function() {
@@ -47,6 +65,7 @@
 		});
 		var laterClose = null;
 		var laterCloseEvent = function() {
+			//			console.log(document.getElementsByTagName('html')[0].innerHTML)
 			!laterClose && (laterClose = $.later(function() {
 				self.isInAnimation = true;
 				self.loader.removeEventListener('tap', laterCloseEvent);
@@ -54,6 +73,8 @@
 				self.close();
 			}, 300));
 		};
+
+
 		this.scroller.addEventListener('doubletap', function() {
 			if (laterClose) {
 				laterClose.cancel();
@@ -68,8 +89,57 @@
 			} else { //open
 				self.loader.addEventListener('tap', laterCloseEvent);
 				self.scroller.addEventListener('tap', laterCloseEvent);
+
 			}
 			self.isInAnimation = false;
+			//喜欢点击的系列处理
+			if (self.options.bottom) {
+				var like_arg = self.options
+				self.phpotolike.querySelector('span').style.visibility = 'visible'
+				if (like_arg.like_hasup) {
+					if (self.phpotolike.querySelector('span').classList.contains('color-red')) {
+						return
+					} else {
+						self.phpotolike.querySelector('span').classList.add('color-red')
+					}
+				}
+
+				self.phpotolike.addEventListener('tap', function() {
+					if (self.phpotolike.querySelector('span').classList.contains('color-red')) {
+						return
+					} else {
+						mui.ajax(like_arg.like_url, {
+							data: {
+								uuid: like_arg.uuid,
+								user_uuid: like_arg.user_uuid,
+								token: like_arg.token
+							},
+							type: 'post',
+							timeout: '5000',
+							success: function(data) {
+								var code = data.code
+								if (code == 10000) {
+									self.phpotolike.querySelector('span').classList.add('color-red')
+
+								}
+							},
+							error: function() {
+								mui.alert('网络连接失败', '摄影圈', function() {
+
+								})
+
+							}
+
+						})
+					}
+				})
+				self.zhuanfa.addEventListener('tap',function(){
+					shareShow()
+				})
+				
+				
+			}
+
 		});
 		this.element.addEventListener('slide', function(e) {
 			if (self.options.zoom) {
@@ -81,9 +151,7 @@
 			var slideNumber = e.detail.slideNumber;
 			self.lastIndex = slideNumber;
 			self.indicator && (self.indicator.innerText = (slideNumber + 1) + '/' + self.currentGroup.length);
-			if(self.options.text.length>0){
-		    	self.footer && (self.footer.innerText =self.options.text[slideNumber] );
-			}
+			self.des && (self.des.innerText = self.options.des[slideNumber])
 			self._loadItem(slideNumber);
 		});
 	};
@@ -318,11 +386,11 @@
 			}
 			itemHtml.push(itemStr.replace('{{className}}', className));
 		}
-		
-//		plus.navigator.setStatusBarBackground('#000000')
-	    plus.webview.currentWebview().setStyle({
-	    	'popGesture':'none'
-	    })
+
+		//		plus.navigator.setStatusBarBackground('#000000')
+		plus.webview.currentWebview().setStyle({
+			'popGesture': 'none'
+		})
 		this.scroller.innerHTML = itemHtml.join('');
 		this.element.style.display = 'block';
 		this.element.classList.add($.className('preview-in'));
@@ -330,9 +398,8 @@
 		this.element.offsetHeight;
 		$(this.element).slider().gotoItem(currentIndex, 0);
 		this.indicator && (this.indicator.innerText = (currentIndex + 1) + '/' + this.currentGroup.length);
-		if(this.options.text.length>0){
-        this.footer && (this.footer.innerText =this.options.text[currentIndex] );
-       }
+		this.title && (this.title.innerText = this.options.title);
+		this.des && (this.des.innerText = this.options.des[currentIndex])
 		this._loadItem(currentIndex, true);
 	};
 	proto.openByGroup = function(index, group) {
@@ -355,10 +422,10 @@
 		}
 	};
 	proto.close = function(index, group) {
-//		plus.navigator.setStatusBarBackground('#ffffff')
+		//		plus.navigator.setStatusBarBackground('#ffffff')
 		plus.webview.currentWebview().setStyle({
-	    	'popGesture':'hide'
-	    })
+			'popGesture': 'hide'
+		})
 		this.element.classList.remove($.className('preview-in'));
 		this.element.classList.add($.className('preview-out'));
 		var itemEl = this.scroller.querySelector($.classSelector('.slider-item:nth-child(' + (this.lastIndex + 1) + ')'));

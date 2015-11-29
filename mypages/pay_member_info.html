@@ -30,9 +30,17 @@
 				line-height: 26px;
 				font-size: 16px;
 			}
-			.pay_member_fixed_btn{
+			
+			.pay_member_fixed_btn {
 				position: fixed;
-			  bottom: 0px;left: 0px; height: 50px; text-align: center;  width: 100%; line-height: 50px; background: #ffaa50; color: #FFFFFF;
+				bottom: 0px;
+				left: 0px;
+				height: 50px;
+				text-align: center;
+				width: 100%;
+				line-height: 50px;
+				background: #ffaa50;
+				color: #FFFFFF;
 			}
 		</style>
 	</head>
@@ -49,38 +57,10 @@
 			<h2 class="mui-text-left">为什么要成为会员</h2>
 			<p>1.为什么要成为会员,为什么要成为会员</p>
 		</div>
-		<div class="pay_member_fixed_btn" id="pay_next_btn">我要成为会员</div>	
-		
+		<div class="pay_member_fixed_btn" id="pay_next_btn">我要成为会员</div>
+
 	</body>
 	<script src="../js/mui.min.js"></script>
-	<script>
-		mui.init();
-		mui.plusReady(function() {
-		
-		})
-			var old_back = mui.back;
-		mui.back = function() {
-			var personalcenter=plus.webview.getWebviewById('page_personalcenter.html')
-			personalcenter.evalJS("setBarBk()")
-		   	old_back();
-		}
-		var pay_next_btn=document.getElementById("pay_next_btn");
-		    pay_next_btn.addEventListener('tap',function(){
-		    	mui.openWindow({
-		    		url:'pay_choice_list.html',
-		    		id:'pay_choice_list.html',
-		    		styles: {
-						top: '0px', //新页面顶部位置
-						bottom: '0px', //新页面底部位置
-						hardwareAccelerated:true
-					},
-					show: {
-						autoShow: true,
-						aniShow: 'slide-in-right',
-						duration: '300',
-					}
-		    	})
-		    },false)
-	</script>
+     <script type="text/javascript" src="../Controller/pay_member_info.controller.js" ></script>		
 
 </html>

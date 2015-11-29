@@ -30,9 +30,7 @@
 		"Events": {
 			"description": "应用扩展事件"
 		},
-		"File": {
-			"description": "访问本地文件系统"
-		},
+
 		"Gallery": {
 			"description": "访问系统相册"
 		},
@@ -60,7 +58,9 @@
 		"Navigator": {
 			"description": "浏览器信息"
 		},
-		"Accelerometer": {}
+		"Accelerometer": {},
+		"Share": {},
+		"Invocation": {}
 	},
 	"plus": {
 		"popGesture": "close",/*设置应用默认侧滑返回关闭Webview窗口，none为无侧滑返回功能，hide为侧滑隐藏Webview窗口。参考ask.dcloud.net.cn/article/102*/
@@ -72,6 +72,15 @@
 		"runmode": "normal",/*两个值，liberate或normal，前者在应用安装时释放资源，后者不需要释放资源*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
 		"distribute": {
+			"plugins": {
+				"share": {
+					"weixin": {
+						"appid": "",
+						"appsecret": "",
+						"description": "可选，微信分享"
+					}
+				}
+			},
 			"debug": "",/*可选，是否为debug模式，可取值：true表示debug模式运行，false表示release模式运行，默认值为false*/
 			"apple": {
 				"appid": "",/*iOS必选，苹果开发网站申请的appid，如com.dheaven.hbuilder*/
