@@ -59,7 +59,7 @@
 			"description": "浏览器信息"
 		},
 		"Accelerometer": {},
-		
+
 		"Invocation": {}
 	},
 	"plus": {
@@ -73,11 +73,25 @@
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
 		"distribute": {
 			"plugins": {
-				"oauth": {
-					
-				},
-				"share": {
-					
+				"oauth": {},
+				"share": {},
+				"apple": {
+					"shortcuts": [
+						{
+							"type": "share",
+							"title": "分 享",
+							"subtitle": "分享到微信、微博、QQ",
+							"icontype": "UIApplicationShortcutIconTypeShare"
+						}, {
+							"type": "about",
+							"title": "关 于",
+							"subtitle": "www.dcloud.io",
+							"iconfile": "sa.png",
+							"userinfo": {
+								"key3": "value3"
+							}
+						}
+					]
 				}
 			},
 			"debug": "",/*可选，是否为debug模式，可取值：true表示debug模式运行，false表示release模式运行，默认值为false*/

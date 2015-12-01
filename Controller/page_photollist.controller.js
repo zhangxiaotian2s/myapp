@@ -18,18 +18,31 @@ function preload() {}
 var canclose = false
 var pagesnumber = 1
 mui.plusReady(function() {
+
 	//读取本地存储，检查是否为首次启动
-	//								var showGuide = plus.storage.getItem("lauchFlag");
+	//	var showGuide = plus.storage.getItem("lauchFlag");
+	if (plus.runtime.launcher == 'shortcut') {
+		// ...
+		var cmd = JSON.parse(plus.runtime.arguments);
+		console.log("Shortcut-plus.runtime.arguments: " + plus.runtime.arguments)
+		var type = cmd && cmd.type;
+		switch (type) {
+			case 'share':
+				// 用户点击了‘share'菜单项
+				break;
+			case 'about':
+				// 用户点击了’about'菜单项
+				break;
+			default:
+				break;
+		}
+	}
 	var showGuide = true
-		//				plus.storage.clear("lauchFlag");
 	if (showGuide) {
 		//有值，说明已经显示过了，无需显示；
 		//关闭splash页面；
-		setTimeout(function() {
-				plus.navigator.closeSplashscreen();
-				plus.navigator.setFullscreen(false);
-			}, 2000)
-			//填入文章列表
+
+		//填入文章列表
 		ajaxPhotoList(pagesnumber)
 			//预加载
 		preload();
@@ -98,6 +111,10 @@ function ajaxPhotoList(page) {
 		type: 'get',
 		timeout: '5000',
 		success: function(data) {
+			//			setTimeout(function() {
+			plus.navigator.closeSplashscreen();
+			plus.navigator.setFullscreen(false);
+			//			}, 2000)
 			var photolist = data.data.photoes;
 			for (i = 0; i < photolist.length; i++) {
 				insertPhotoList(photolist[i].images, photolist[i].uuid, photolist[i].title, photolist[i].author, photolist[i].comments, photolist[i].favorites)
@@ -145,7 +162,7 @@ mui('#photo_list').on('tap', 'li', function() {
 		};
 		mui.openWindow({
 			id: 'mypages/photo.html',
-			url:  'mypages/photo.html',
+			url: 'mypages/photo.html',
 			styles: {
 				hardwareAccelerated: true,
 				scrollsToTop: true,
