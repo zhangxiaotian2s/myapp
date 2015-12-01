@@ -28,7 +28,7 @@ mui.plusReady(function() {
 		setTimeout(function() {
 				plus.navigator.closeSplashscreen();
 				plus.navigator.setFullscreen(false);
-			}, 1500)
+			}, 2000)
 			//填入文章列表
 		ajaxPhotoList(pagesnumber)
 			//预加载

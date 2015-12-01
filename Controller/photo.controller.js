@@ -23,14 +23,14 @@ var shareMes={
 mui.plusReady(function() {
 	nwaiting = plus.nativeUI.showWaiting(); //显示原生等待框
 	
-	//分享
-	updateSerivces();
-	if (plus.os.name == "Android") {
-		Intent = plus.android.importClass("android.content.Intent");
-		File = plus.android.importClass("java.io.File");
-		Uri = plus.android.importClass("android.net.Uri");
-		main = plus.android.runtimeMainActivity();
-	}
+//	//分享
+//	updateSerivces();
+//	if (plus.os.name == "Android") {
+//		Intent = plus.android.importClass("android.content.Intent");
+//		File = plus.android.importClass("java.io.File");
+//		Uri = plus.android.importClass("android.net.Uri");
+//		main = plus.android.runtimeMainActivity();
+//	}
 	var self = plus.webview.currentWebview();
 	var news_uuid = self.uuid;
 	var user_uuid = self.user_uuid;
@@ -57,7 +57,7 @@ function ajaxGetNewsContent(news_uuid, user_uuid, token) {
 				newsBaseInfo(data.data)
 				insertPhotolist(data)
 				//分享
-				getShareMes(data.data.share)
+//				getShareMes(data.data.share)
 				//图片查看
 				mui.previewImage({
 					title: "等待调取",
@@ -90,9 +90,9 @@ function ajaxGetNewsContent(news_uuid, user_uuid, token) {
 }
 //插入文章的基本信息
 function newsBaseInfo(news) {
-	news_title.innerText = news.title
-	news_time.innerText = news.time
-	news_author.innerText = news.author
+//	news_title.innerText = news.title
+//	news_time.innerText = news.time
+//	news_author.innerText = news.author
 }
 var arrdes = new Array()
 
@@ -118,96 +118,96 @@ function insertPhotolist(data) {
 }
 
 
-function getShareMes(share){
-	shareMes.href=share.url
-	shareMes.title=share.title
-	shareMes.content=share.summary
-	shareMes.thumbs=share.image
-}
-// 打开分享
-function shareShow() {
-	bhref = false;
-	var ids = [{
-			id: "weixin",
-			ex: "WXSceneSession"
-		}, {
-			id: "weixin",
-			ex: "WXSceneTimeline"
-		}],
-		bts = [{
-			title: "发送给微信好友"
-		}, {
-			title: "分享到微信朋友圈"
-		}];
-	plus.nativeUI.actionSheet({
-			cancel: "取消",
-			buttons: bts
-		},
-		function(e) {
-			var i = e.index;
-			if (i > 0) {
-				shareAction(ids[i - 1].id, ids[i - 1].ex);
-			}
-		}
-	);
-}
-
-/**
- * 更新分享服务
- */
-function updateSerivces() {
-	plus.share.getServices(function(s) {
-		shares = {};
-		for (var i in s) {
-			var t = s[i];
-			shares[t.id] = t;
-		}
-	}, function(e) {
-		outSet("获取分享服务列表失败：" + e.message);
-	});
-}
-/**
- * 分享操作
- * @param {String} id
- */
-function shareAction(id, ex) {
-	var s = null;
-	//				outSet("分享操作：");
-	if (!id || !(s = shares[id])) {
-		outLine("无效的分享服务！");
-		return;
-	}
-	if (s.authenticated) {
-		//					outLine("---已授权---");
-		shareMessage(s, ex);
-	} else {
-		//					outLine("---未授权---");
-		s.authorize(function() {
-			shareMessage(s, ex);
-		}, function(e) {
-			//						outLine("认证授权失败：" + e.code + " - " + e.message);
-		});
-	}
-}
-/**
- * 发送分享消息
- * @param {plus.share.ShareService} s
- */
-function shareMessage(s, ex) {
-	var msg = {
-		content: "",
-		extra: {
-			scene: ex
-		}
-	};
-	msg.href = shareMes.href;
-	msg.title = shareMes.title;
-	msg.content = shareMes.content;
-	msg.thumbs = [shareMes.thumbs]
-	msg.pictures =[shareMes.thumbs];
-	s.send(msg, function() {
-
-	}, function(e) {
-
-	});
-}
+//function getShareMes(share){
+//	shareMes.href=share.url
+//	shareMes.title=share.title
+//	shareMes.content=share.summary
+//	shareMes.thumbs=share.image
+//}
+//// 打开分享
+//function shareShow() {
+//	bhref = false;
+//	var ids = [{
+//			id: "weixin",
+//			ex: "WXSceneSession"
+//		}, {
+//			id: "weixin",
+//			ex: "WXSceneTimeline"
+//		}],
+//		bts = [{
+//			title: "发送给微信好友"
+//		}, {
+//			title: "分享到微信朋友圈"
+//		}];
+//	plus.nativeUI.actionSheet({
+//			cancel: "取消",
+//			buttons: bts
+//		},
+//		function(e) {
+//			var i = e.index;
+//			if (i > 0) {
+//				shareAction(ids[i - 1].id, ids[i - 1].ex);
+//			}
+//		}
+//	);
+//}
+//
+///**
+// * 更新分享服务
+// */
+//function updateSerivces() {
+//	plus.share.getServices(function(s) {
+//		shares = {};
+//		for (var i in s) {
+//			var t = s[i];
+//			shares[t.id] = t;
+//		}
+//	}, function(e) {
+//		outSet("获取分享服务列表失败：" + e.message);
+//	});
+//}
+///**
+// * 分享操作
+// * @param {String} id
+// */
+//function shareAction(id, ex) {
+//	var s = null;
+//	//				outSet("分享操作：");
+//	if (!id || !(s = shares[id])) {
+//		outLine("无效的分享服务！");
+//		return;
+//	}
+//	if (s.authenticated) {
+//		//					outLine("---已授权---");
+//		shareMessage(s, ex);
+//	} else {
+//		//					outLine("---未授权---");
+//		s.authorize(function() {
+//			shareMessage(s, ex);
+//		}, function(e) {
+//			//						outLine("认证授权失败：" + e.code + " - " + e.message);
+//		});
+//	}
+//}
+///**
+// * 发送分享消息
+// * @param {plus.share.ShareService} s
+// */
+//function shareMessage(s, ex) {
+//	var msg = {
+//		content: "",
+//		extra: {
+//			scene: ex
+//		}
+//	};
+//	msg.href = shareMes.href;
+//	msg.title = shareMes.title;
+//	msg.content = shareMes.content;
+//	msg.thumbs = [shareMes.thumbs]
+//	msg.pictures =[shareMes.thumbs];
+//	s.send(msg, function() {
+//
+//	}, function(e) {
+//
+//	});
+//}

@@ -1,7 +1,7 @@
 {
-	"@platforms": ["android", "iPhone", "iPad"],
+	"@platforms": ["android", "iPhone"],
 	"id": "H558A6BF2",/*必选，应用的标识*/
-	"name": "myapp",/*必选，应用名称*/
+	"name": "摄影圈",/*必选，应用名称*/
 	"version": {
 		"name": "1.0.1",/*必选，版本名称*/
 		"code": ""
@@ -59,7 +59,7 @@
 			"description": "浏览器信息"
 		},
 		"Accelerometer": {},
-		"Share": {},
+		
 		"Invocation": {}
 	},
 	"plus": {
@@ -67,18 +67,17 @@
 		"splashscreen": {
 			"autoclose": true,/*如果为true，程序启动的图片可以自动关闭，如果为false，开发者需要手动关闭*/
 			"waiting": true,
-			"delay": "6000"
+			"delay": "500"
 		},
 		"runmode": "normal",/*两个值，liberate或normal，前者在应用安装时释放资源，后者不需要释放资源*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
 		"distribute": {
 			"plugins": {
+				"oauth": {
+					
+				},
 				"share": {
-					"weixin": {
-						"appid": "",
-						"appsecret": "",
-						"description": "可选，微信分享"
-					}
+					
 				}
 			},
 			"debug": "",/*可选，是否为debug模式，可取值：true表示debug模式运行，false表示release模式运行，默认值为false*/
@@ -103,42 +102,46 @@
 					"prerendered": "", /*必选，是否高亮显示*/
 					"auto": "", /*可选，512x512，用于自动生成各种尺寸图标的大分辨率程序图标*/
 					"iphone": {
-						"normal": "",/*可选，57x57，iPhone普通屏幕程序图标*/
-						"retina": "",/*可选，114x114，iPhone高分屏程序图标*/
-						"retina7": "",/*可选，120x120，iPhone iOS7高分屏程序图标*/
-						"spotlight-normal": "", /*可选，29x29，iPhone Spotlight搜索程序图标*/
-						"spotlight-retina": "", /*可选，58x58，iPhone高分屏Spotlight搜索程序图标*/
-						"spotlight-retina7": "",/*可选，80x80，iPhone iOS7高分屏Spotlight搜索程序图标*/
-						"settings-normal": "", /*可选，29x29，iPhone设置页面程序图标*/
-						"settings-retina": ""
+						"normal": "unpackage/res/icons/logo57.png",/*可选，57x57，iPhone普通屏幕程序图标*/
+						"retina": "unpackage/res/icons/logo114.png",/*可选，114x114，iPhone高分屏程序图标*/
+						"retina7": "unpackage/res/icons/logo120.png",/*可选，120x120，iPhone iOS7高分屏程序图标*/
+						"spotlight-normal": "unpackage/res/icons/logo29.png", /*可选，29x29，iPhone Spotlight搜索程序图标*/
+						"spotlight-retina": "unpackage/res/icons/logo58.png", /*可选，58x58，iPhone高分屏Spotlight搜索程序图标*/
+						"spotlight-retina7": "unpackage/res/icons/logo80.png",/*可选，80x80，iPhone iOS7高分屏Spotlight搜索程序图标*/
+						"settings-normal": "unpackage/res/icons/logo29.png", /*可选，29x29，iPhone设置页面程序图标*/
+						"settings-retina": "unpackage/res/icons/logo58.png",
+						"retina8": "unpackage/res/icons/logo180.png",
+						"settings-retina8": "unpackage/res/icons/logo87.png"
 					},
 					"ipad": {
-						"normal": "", /*可选，72x72，iPad普通屏幕程序图标*/
-						"retina": "", /*可选，144x144，iPad高分屏程序图标*/
-						"normal7": "", /*可选，76x76，iPad iOS7程序图标*/
-						"retina7": "", /*可选，152x152，iPad iOS7高分屏程序图标*/
-						"spotlight-normal": "", /*可选，50x50，iPad Spotlight搜索程序图标*/
-						"spotlight-retina": "", /*可选，100x100，iPad高分屏Spotlight搜索程序图标*/
-						"spotlight-normal7": "",/*可选，40x40，iPad iOS7 Spotlight搜索程序图标*/
-						"spotlight-retina7": "",/*可选，80x80，iPad iOS7高分屏Spotlight搜索程序图标*/
-						"settings-normal": "",/*可选，29x29，iPad设置页面程序图标*/
-						"settings-retina": ""
+						"normal": "unpackage/res/icons/logo72.png", /*可选，72x72，iPad普通屏幕程序图标*/
+						"retina": "unpackage/res/icons/logo144.png", /*可选，144x144，iPad高分屏程序图标*/
+						"normal7": "unpackage/res/icons/logo76.png", /*可选，76x76，iPad iOS7程序图标*/
+						"retina7": "unpackage/res/icons/logo152.png", /*可选，152x152，iPad iOS7高分屏程序图标*/
+						"spotlight-normal": "unpackage/res/icons/logo50.png", /*可选，50x50，iPad Spotlight搜索程序图标*/
+						"spotlight-retina": "unpackage/res/icons/logo100.png", /*可选，100x100，iPad高分屏Spotlight搜索程序图标*/
+						"spotlight-normal7": "unpackage/res/icons/logo40.png",/*可选，40x40，iPad iOS7 Spotlight搜索程序图标*/
+						"spotlight-retina7": "unpackage/res/icons/logo80.png",/*可选，80x80，iPad iOS7高分屏Spotlight搜索程序图标*/
+						"settings-normal": "unpackage/res/icons/logo29.png",/*可选，29x29，iPad设置页面程序图标*/
+						"settings-retina": "unpackage/res/icons/logo58.png"
 					}
 				},
 				"android": {
-					"mdpi": "", /*必选，48x48，普通屏程序图标*/
-					"ldpi": "", /*必选，48x48，大屏程序图标*/
-					"hdpi": "", /*必选，72x72，高分屏程序图标*/
-					"xhdpi": "",/*必选，96x96，720P高分屏程序图标*/
-					"xxhdpi": ""
+					"mdpi": "unpackage/res/icons/logo48.png", /*必选，48x48，普通屏程序图标*/
+					"ldpi": "unpackage/res/icons/logo48.png", /*必选，48x48，大屏程序图标*/
+					"hdpi": "unpackage/res/icons/logo72.png", /*必选，72x72，高分屏程序图标*/
+					"xhdpi": "unpackage/res/icons/logo96.png",/*必选，96x96，720P高分屏程序图标*/
+					"xxhdpi": "unpackage/res/icons/logo144.png"
 				}
 			},
 			"splashscreen": {
 				"ios": {
 					"iphone": {
-						"default": "", /*必选，320x480，iPhone3启动图片*/
-						"retina35": "",/*必选，640x960，3.5英寸设备(iPhone4)启动图片*/
-						"retina40": ""
+						"default": "unpackage/res/icons/splash3s.png", /*必选，320x480，iPhone3启动图片*/
+						"retina35": "unpackage/res/icons/splash4s.png",/*必选，640x960，3.5英寸设备(iPhone4)启动图片*/
+						"retina40": "unpackage/res/icons/splash5s.png",
+						"retina47": "unpackage/res/icons/splash.png",
+						"retina55": "unpackage/res/icons/splash6P.png"
 					},
 					"ipad": {
 						"portrait": "", /*可选，768x1004，需支持iPad时必选，iPad竖屏启动图片*/
@@ -152,11 +155,11 @@
 					}
 				},
 				"android": {
-					"mdpi": "", /*必选，240x282，普通屏启动图片*/
-					"ldpi": "", /*必选，320x442，大屏启动图片*/
-					"hdpi": "", /*必选，480x762，高分屏启动图片*/
-					"xhdpi": "", /*必选，720x1242，720P高分屏启动图片*/
-					"xxhdpi": ""
+					"mdpi": "unpackage/res/icons/splash240320.png", /*必选，240x282，普通屏启动图片*/
+					"ldpi": "unpackage/res/icons/splash320480.png", /*必选，320x442，大屏启动图片*/
+					"hdpi": "unpackage/res/icons/splash480800.png", /*必选，480x762，高分屏启动图片*/
+					"xhdpi": "unpackage/res/icons/splash7201280.png", /*必选，720x1242，720P高分屏启动图片*/
+					"xxhdpi": "unpackage/res/icons/splash10801920.png"
 				}
 			}
 		}

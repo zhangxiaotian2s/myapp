@@ -1,6 +1,6 @@
 (function($, window) {
-
-	var template = '<div id="{{id}}" class="mui-slider mui-preview-image mui-fullscreen"><div class="mui-preview-header my-mui-previewimage-header">{{header}}</div><div class="mui-slider-group"></div><div class="mui-preview-footer mui-hidden">{{footer}}</div><div class="previewimg_foot_mes"><h1 class="previewimg-footor-title" style=""></h1><p class="previewimg_des"></p></div><div class="previewimg_foot mui-hidden"><div class="news-shoucang" id="zhuanfa" style="float:right;padding: 3px 10px; margin:5px 10px 0px 0px ;"><span class="mui-icon mui-icon-redo" ></span>转发</div><div class="mui-shoucang my-souchangstyle photolike" ><span class="iconfont  icon-xin " ></span>喜欢</div></div ><div class="mui-preview-loading"><span class="mui-spinner mui-spinner-white"></span></div></div>';
+//<div class="news-shoucang" id="zhuanfa" style="float:right;padding: 3px 10px; margin:5px 10px 0px 0px ;"><span class="mui-icon mui-icon-redo" ></span>转发</div>
+	var template = '<div id="{{id}}" class="mui-slider mui-preview-image mui-fullscreen"><div class="mui-preview-header my-mui-previewimage-header">{{header}}</div><div class="mui-slider-group"></div><div class="mui-preview-footer mui-hidden">{{footer}}</div><div class="previewimg_foot_mes"><h1 class="previewimg-footor-title" style=""></h1><p class="previewimg_des"></p></div><div class="previewimg_foot mui-hidden"><div class="mui-shoucang my-souchangstyle photolike" ><span class="iconfont  icon-xin " ></span>喜欢</div></div ><div class="mui-preview-loading"><span class="mui-spinner mui-spinner-white"></span></div></div>';
 	var itemTemplate = '<div class="mui-slider-item mui-zoom-wrapper {{className}}"><div class="mui-zoom-scroller"><img src="{{src}}" data-preview-lazyload="{{lazyload}}" style="{{style}}" class="mui-zoom"></div></div>';
 	var defaultGroupName = '__DEFAULT';
 	var div = document.createElement('div');
@@ -133,9 +133,9 @@
 						})
 					}
 				})
-				self.zhuanfa.addEventListener('tap',function(){
-					shareShow()
-				})
+//				self.zhuanfa.addEventListener('tap',function(){
+//					shareShow()
+//				})
 				
 				
 			}
