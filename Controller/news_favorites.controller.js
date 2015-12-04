@@ -80,7 +80,7 @@ function setNewsListTap(news_uuid, user_uuid) {
 			user_uuid: user_uuid
 		},
 		waiting: {
-			autoShow: false
+			autoShow: true
 		}
 	});
 }

@@ -3,7 +3,7 @@ mui.init({
 		doubletap: true
 	}
 });
-var nwaiting
+
 
 var head_title = document.getElementById('head_title'),
 	news_title = document.getElementById('news_title'),
@@ -21,16 +21,6 @@ var shareMes={
 }	
 	
 mui.plusReady(function() {
-	nwaiting = plus.nativeUI.showWaiting(); //显示原生等待框
-	
-//	//分享
-//	updateSerivces();
-//	if (plus.os.name == "Android") {
-//		Intent = plus.android.importClass("android.content.Intent");
-//		File = plus.android.importClass("java.io.File");
-//		Uri = plus.android.importClass("android.net.Uri");
-//		main = plus.android.runtimeMainActivity();
-//	}
 	var self = plus.webview.currentWebview();
 	var news_uuid = self.uuid;
 	var user_uuid = self.user_uuid;
@@ -53,7 +43,7 @@ function ajaxGetNewsContent(news_uuid, user_uuid, token) {
 			//关闭显示框
 			var code = data.code
 			if (code == 10000) {
-				nwaiting.close();
+			  document.getElementById('waiting').classList.add('mui-hidden')
 				newsBaseInfo(data.data)
 				insertPhotolist(data)
 				//分享

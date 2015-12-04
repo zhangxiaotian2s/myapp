@@ -28,8 +28,6 @@ var head_title = document.getElementById('head_title'),
 //}
 
 mui.plusReady(function() {
-	nwaiting = plus.nativeUI.showWaiting(); //显示原生等待框
-
 	//分享
 //	updateSerivces();
 //	if (plus.os.name == "Android") {
@@ -74,10 +72,13 @@ function ajaxGetNewsContent(news_uuid, user_uuid) {
 		type: 'get',
 		timeout: 5000,
 		success: function(data) {
+			setTimeout(function(){
+		    	 document.getElementById('waiting').style.display='none'
+			 },1000)
 			//关闭显示框
 			var code = data.code
 			if (code == 10000) {
-				nwaiting.close();
+			
 				newsBaseInfo(data.data)
 				var content = data.data.content
 					//图片放大查看插件

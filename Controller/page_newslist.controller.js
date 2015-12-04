@@ -1,7 +1,6 @@
 var newslist = document.getElementById('news_list')
 var pagenumber=1
 mui.init({
-	
 	pullRefresh: {
 		container: "#pagenewslist-refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
 		up: {
@@ -36,7 +35,6 @@ mui.plusReady(function() {
 		var user_uuid = plus.storage.getItem('uuid')
 		setNewsListTap(news_uuid, user_uuid)
 	})
-
 })
 
 function inserPageNewsList(page) {
@@ -52,13 +50,10 @@ function inserPageNewsList(page) {
 				insertBanner(data)
 			}
 			insertNewsList(data)
-
 		},
 		error: function() {}
-
 	})
 }
-
 function insertBanner(data) {
 	var slider_loop_box = document.getElementById('slider_loop_box');
 	var banner = data.data.banners
@@ -110,7 +105,6 @@ function setNewsListType(uuid, title, arrimg, author, comments, favorites) {
 	}
 	news_list.innerHTML += _html
 }
-
 //////////////////////////////////////////////////点击到内容页面的处理
 function setNewsListTap(news_uuid, user_uuid) {
 	mui.openWindow({
@@ -120,9 +114,10 @@ function setNewsListTap(news_uuid, user_uuid) {
 			top: '0px',
 			bottom: '0px',
 			scrollsToTop: true,
+			hardwareAccelerated: true
 		},
 		show: {
-			duration: 300
+//			duration: 300
 		},
 		extras: {
 			uuid: news_uuid,

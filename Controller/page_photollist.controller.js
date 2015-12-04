@@ -12,6 +12,12 @@ if (mui.os.android) {
 		aniShow = "slide-in-right";
 	}
 }
+ var photopages=mui.preload({
+ 	url:'mypages/photo.html',
+ 	id:'mypages/photo.html'
+ })
+
+
 //初始化，并预加载webview模式的选项卡			
 function preload() {}
 //两个判断是否关闭启动页的条件
@@ -54,9 +60,6 @@ mui.plusReady(function() {
 			show: {
 				aniShow: 'none'
 			},
-			waiting: {
-				autoShow: false
-			}
 		});
 		//延迟的原因：优先打开启动导航页面，避免资源争夺
 		setTimeout(function() {
@@ -109,12 +112,13 @@ function ajaxPhotoList(page) {
 			page: page
 		},
 		type: 'get',
+		dataType: 'json',
 		timeout: '5000',
 		success: function(data) {
-			//			setTimeout(function() {
-			plus.navigator.closeSplashscreen();
-			plus.navigator.setFullscreen(false);
-			//			}, 2000)
+			setTimeout(function() {
+				plus.navigator.closeSplashscreen();
+				plus.navigator.setFullscreen(false);
+			}, 1000)
 			var photolist = data.data.photoes;
 			for (i = 0; i < photolist.length; i++) {
 				insertPhotoList(photolist[i].images, photolist[i].uuid, photolist[i].title, photolist[i].author, photolist[i].comments, photolist[i].favorites)
@@ -154,12 +158,6 @@ mui('#photo_list').on('tap', 'li', function() {
 	var type = this.getAttribute("open-type");
 	var uuid = this.getAttribute('data-uuid');
 	//不使用父子模板方案的页面
-	if (type == "common") {
-		var webview_style = {
-			popGesture: "close",
-			blockNetworkImage: true,
-			scrollsToTop: true
-		};
 		mui.openWindow({
 			id: 'mypages/photo.html',
 			url: 'mypages/photo.html',
@@ -168,16 +166,15 @@ mui('#photo_list').on('tap', 'li', function() {
 				scrollsToTop: true,
 			},
 			show: {
-				autoShow: true,
-				duration: 300
+//				autoShow: true,
+//				duration: 300
+			},
+			waiting:{
+				autoShow:false
 			},
 			extras: {
 				uuid: uuid
-			},
-			createNew: false,
-			waiting: {
-				autoShow: false
 			}
 		});
-	}
+
 });

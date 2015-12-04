@@ -7,6 +7,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="HandheldFriendly" content="true"/>
+		<meta name="MobileOptimized" content="320"/>
 		<link rel="stylesheet" href="css/mui.min.css">
 		<style type="text/css">
 			#list {
@@ -40,6 +42,7 @@
 				background: none;
 			}
 			.photo-ul li .img-box {
+				 position: relative;
 				background: url(images/zwf16_9.jpg);
 				background-size: cover;
 				height: 210px;
@@ -47,6 +50,8 @@
 			}
 			
 			.photo-ul li img {
+				position: absolute;
+				 top: 0px ; left: 0px;
 				width: 100%;
 				margin: auto;
 			}
@@ -64,6 +69,7 @@
 		 .img-xihuan{padding:3px 15px; border:#b9b9b9 solid 1px; margin:3px 10px 5px 0px;  float: right;font-size: 14px; border-radius: 15px; color: #b9b9b9;line-height: 22px}
 		.img-xihuan span{ color: #ff6666;}
 		</style>
+		<script src="js/mui.min.js"></script>
 	</head>
 
 	<body style="background: #f6f6f6;">
@@ -75,8 +81,9 @@
 				</ul>
 			</div>
 		</div>
-		<script src="js/mui.min.js"></script>
+		
         <script type="text/javascript" src="Controller/page_photollist.controller.js" ></script>			
+        <link rel="prefetch" href="mypages/photo.html" /> 
 	</body>
 
 </html>

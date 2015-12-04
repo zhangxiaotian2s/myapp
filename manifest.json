@@ -3,12 +3,12 @@
 	"id": "H558A6BF2",/*必选，应用的标识*/
 	"name": "摄影圈",/*必选，应用名称*/
 	"version": {
-		"name": "1.0.1",/*必选，版本名称*/
+		"name": "1.0.4",/*必选，版本名称*/
 		"code": ""
 	},
 	"description": "",/*可选，应用描述信息*/
 	"icons": {
-		"72": "icon.png"
+		"72": "logo72.png"
 	},
 	"fullscreen": true,
 	"launch_path": "index.html",/*必选，应用的入口页面，默认为根目录下的index.html；也可以是网络地址，网络地址必须以http://或https://开头*/
@@ -60,14 +60,14 @@
 		},
 		"Accelerometer": {},
 
-		"Invocation": {}
+		"Invocation": {},"File":{},"NativeObj":{},"Downloader":{},"Geolocation":{},"Uploader":{}
 	},
 	"plus": {
 		"popGesture": "close",/*设置应用默认侧滑返回关闭Webview窗口，none为无侧滑返回功能，hide为侧滑隐藏Webview窗口。参考ask.dcloud.net.cn/article/102*/
 		"splashscreen": {
 			"autoclose": true,/*如果为true，程序启动的图片可以自动关闭，如果为false，开发者需要手动关闭*/
 			"waiting": true,
-			"delay": "500"
+			"delay": "1000"
 		},
 		"runmode": "normal",/*两个值，liberate或normal，前者在应用安装时释放资源，后者不需要释放资源*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
@@ -108,7 +108,7 @@
 				"keystore": "",/*Android必选，打包证书文件*/
 				"password": "",/*Android必选，打包证书密码*/
 				"aliasname": "",/*Android必选，打包证书别名*/
-				"permissions": ["<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>", "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>", "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>", "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>", "<uses-permission android:name=\"android.permission.VIBRATE\"/>", "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>", "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>", "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>", "<uses-feature android:name=\"android.hardware.camera\"/>", "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>", "<uses-permission android:name=\"android.permission.CAMERA\"/>"]
+				"permissions": ["<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>"]
 			},
 			"orientation": ["portrait-primary"],/*必选*/
 			"icons": {
@@ -176,6 +176,787 @@
 					"xxhdpi": "unpackage/res/icons/splash10801920.png"
 				}
 			}
+		}
+	},
+	"dependencies": {
+		"pages": {
+			"index.html": {
+				"resources": [
+					"page_photollist.html",
+					"js/mui.min.js",
+					"page_newslist.html",
+					"css/mui.min.css",
+					"js/update.js",
+					"fonts/iconfont.ttf",
+					"page_personalcenter.html",
+					"manifest.json",
+					"fonts/mui.ttf"
+				],
+				"refer": [
+					"examples/info.html",
+					"mypages/search_photo.html"
+				],
+				"priority": 0
+			},
+			"page_photollist.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"fonts/iconfont.ttf",
+					"Controller/page_photollist.controller.js",
+					"images/zwf16_9.jpg",
+					"fonts/mui.ttf",
+					"mypages/photo.html"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mypages/about.html": {
+				"resources": [
+					"Controller/about.controller.js",
+					"manifest.json",
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"fonts/iconfont.ttf"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"page_newslist.html": {
+				"resources": [
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css",
+					"Controller/page_newslist.controller.js"
+				],
+				"refer": [
+					"mypages/news.html"
+				],
+				"priority": 0
+			},
+			"mypages/news_favorites.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"Controller/news_favorites.controller.js",
+					"fonts/iconfont.ttf",
+					"images/zwf16_9.jpg",
+					"fonts/mui.ttf"
+				],
+				"refer": [
+					"mypages/news.html"
+				],
+				"priority": 0
+			},
+			"page_personalcenter.html": {
+				"resources": [
+					"images/muwu.jpg",
+					"fonts/mui.ttf",
+					"Controller/page_personalcenter.controller.js",
+					"js/mui.min.js",
+					"css/mui.min.css"
+				],
+				"refer": [
+					"mypages/about.html",
+					"mypages/news_favorites.html",
+					"mypages/login.html",
+					"mypages/pay_member_info.html",
+					"mypages/suggestion.html",
+					"mypages/useinfo_change.html"
+				],
+				"priority": 0
+			},
+			"mypages/login.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"fonts/iconfont.ttf",
+					"images/register_bk.jpg",
+					"Controller/login.controller.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"examples/popovers.html": {
+				"href": "examples/popovers.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 0
+			},
+			"examples/icons.html": {
+				"href": "examples/icons.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 1
+			},
+			"examples/numbox.html": {
+				"href": "examples/numbox.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 2
+			},
+			"examples/im-chat.html": {
+				"href": "examples/im-chat.html",
+				"resources": [
+					"css/app.css",
+					"css/mui.imageviewer.css",
+					"js/mui.imageViewer.js",
+					"js/arttmpl.js",
+					"images/logo.png"
+				],
+				"priority": 3
+			},
+			"examples/slider-table-default.html": {
+				"href": "examples/slider-table-default.html",
+				"resources": [
+					"images/shuijiao.jpg",
+					"css/app.css",
+					"images/muwu.jpg",
+					"images/cbd.jpg",
+					"images/yuantiao.jpg"
+				],
+				"priority": 4
+			},
+			"examples/actionsheet-plus.html": {
+				"href": "examples/actionsheet-plus.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 5
+			},
+			"examples/tab-with-segmented-control-vertical.html": {
+				"href": "examples/tab-with-segmented-control-vertical.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 6
+			},
+			"examples/setting.html": {
+				"href": "examples/setting.html",
+				"resources": [
+					"libs/easymob-webim-sdk/strophe-custom-2.0.0.js",
+					"libs/easymob-webim-sdk/jquery-1.11.1.js",
+					"images/logo.png",
+					"libs/easymob-webim-sdk/json2.js",
+					"js/feedback-page.js",
+					"css/feedback-page.css",
+					"images/iconfont-tianjia.png",
+					"libs/easymob-webim-sdk/easemob.im-1.0.5.js",
+					"js/mui.view.js",
+					"js/feedback.js"
+				],
+				"refer": [
+					"examples/guide.html"
+				],
+				"priority": 7
+			},
+			"examples/accordion.html": {
+				"href": "examples/accordion.html",
+				"resources": [
+					"images/shuijiao.jpg",
+					"css/app.css",
+					"images/muwu.jpg",
+					"images/cbd.jpg",
+					"images/yuantiao.jpg"
+				],
+				"priority": 8
+			},
+			"examples/buttons-with-block.html": {
+				"href": "examples/buttons-with-block.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 9
+			},
+			"examples/list-triplex-row.html": {
+				"href": "examples/list-triplex-row.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 10
+			},
+			"examples/tabbar.html": {
+				"href": "examples/tabbar.html",
+				"resources": [
+					"css/app.css",
+					"images/60x60.gif"
+				],
+				"priority": 11
+			},
+			"examples/login.html": {
+				"href": "examples/login.html",
+				"resources": [
+					"css/app.css",
+					"images/login-1.png"
+				],
+				"priority": 12
+			},
+			"examples/pullrefresh_with_tab.html": {
+				"href": "examples/pullrefresh_with_tab.html",
+				"resources": [
+					"js/mui.pullToRefresh.js",
+					"js/mui.pullToRefresh.material.js"
+				],
+				"priority": 13
+			},
+			"examples/media-list.html": {
+				"href": "examples/media-list.html",
+				"resources": [
+					"images/shuijiao.jpg",
+					"css/app.css",
+					"images/muwu.jpg",
+					"images/cbd.jpg",
+					"images/yuantiao.jpg"
+				],
+				"priority": 14
+			},
+			"examples/grid-default.html": {
+				"href": "examples/grid-default.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 15
+			},
+			"examples/grid-pagination.html": {
+				"href": "examples/grid-pagination.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 16
+			},
+			"examples/pagination.html": {
+				"href": "examples/pagination.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 17
+			},
+			"examples/radio.html": {
+				"href": "examples/radio.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 18
+			},
+			"examples/tab-with-viewpagerindicator.html": {
+				"href": "examples/tab-with-viewpagerindicator.html",
+				"priority": 2
+			},
+			"examples/picker.html": {
+				"href": "examples/picker.html",
+				"resources": [
+					"js/city.data.js",
+					"js/mui.picker.js",
+					"css/mui.poppicker.css",
+					"css/mui.picker.css",
+					"js/mui.poppicker.js",
+					"css/app.css",
+					"js/city.data-3.js",
+					"css/mui.picker.min.css",
+					"js/mui.picker.min.js"
+				],
+				"priority": 20
+			},
+			"examples/tab-webview-subpage-about.html": {
+				"href": "examples/tab-webview-subpage-about.html",
+				"resources": [],
+				"priority": 21
+			},
+			"examples/tab-webview-subpage-setting.html": {
+				"href": "examples/tab-webview-subpage-setting.html",
+				"resources": [],
+				"priority": 22
+			},
+			"examples/tab-webview-subpage-chat.html": {
+				"href": "examples/tab-webview-subpage-chat.html",
+				"resources": [],
+				"priority": 23
+			},
+			"examples/tab-webview-subpage-contact.html": {
+				"href": "examples/tab-webview-subpage-contact.html",
+				"resources": [
+					"images/60x60.gif"
+				],
+				"priority": 24
+			},
+			"examples/tab-webview-main.html": {
+				"href": "examples/tab-webview-main.html",
+				"resources": [],
+				"refer": [
+					"examples/tab-webview-subpage-about.html",
+					"examples/tab-webview-subpage-setting.html",
+					"examples/tab-webview-subpage-chat.html",
+					"examples/tab-webview-subpage-contact.html"
+				],
+				"priority": 21
+			},
+			"examples/list-with-input.html": {
+				"href": "examples/list-with-input.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 22
+			},
+			"examples/clouddb_wilddog.html": {
+				"href": "examples/clouddb_wilddog.html",
+				"resources": [],
+				"priority": 23
+			},
+			"examples/ajax.html": {
+				"href": "examples/ajax.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 24
+			},
+			"examples/checkbox.html": {
+				"href": "examples/checkbox.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 25
+			},
+			"examples/nav.html": {
+				"href": "examples/nav.html",
+				"resources": [],
+				"priority": 26
+			},
+			"examples/tableviews-with-swipe.html": {
+				"href": "examples/tableviews-with-swipe.html",
+				"priority": 4
+			},
+			"examples/buttons-with-icons.html": {
+				"href": "examples/buttons-with-icons.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 28
+			},
+			"examples/imageviewer.html": {
+				"href": "examples/imageviewer.html",
+				"resources": [
+					"images/muwu.jpg",
+					"images/shuijiao.jpg",
+					"js/mui.previewimage.js",
+					"js/mui.zoom.js",
+					"images/yuantiao.jpg"
+				],
+				"priority": 29
+			},
+			"examples/offcanvas-drag-left-plus-menu.html": {
+				"href": "examples/offcanvas-drag-left-plus-menu.html",
+				"resources": [],
+				"priority": 30
+			},
+			"examples/offcanvas-drag-left-plus-main.html": {
+				"href": "examples/offcanvas-drag-left-plus-main.html",
+				"resources": [],
+				"refer": [
+					"examples/offcanvas-drag-left-plus-menu.html"
+				],
+				"priority": 30
+			},
+			"examples/buttons-with-badges.html": {
+				"href": "examples/buttons-with-badges.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 31
+			},
+			"examples/offcanvas-drag-right.html": {
+				"href": "examples/offcanvas-drag-right.html",
+				"resources": [],
+				"priority": 32
+			},
+			"examples/typography.html": {
+				"href": "examples/typography.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 33
+			},
+			"examples/template.html": {
+				"href": "examples/template.html",
+				"resources": [],
+				"priority": 34
+			},
+			"examples/echarts.html": {
+				"href": "examples/echarts.html",
+				"resources": [
+					"css/app.css",
+					"libs/echarts-all.js"
+				],
+				"priority": 35
+			},
+			"examples/tableviews-with-collapses.html": {
+				"href": "examples/tableviews-with-collapses.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 36
+			},
+			"examples/indexed-list-select.html": {
+				"href": "examples/indexed-list-select.html",
+				"resources": [
+					"css/mui.indexedlist.css",
+					"js/mui.indexedlist.js"
+				],
+				"priority": 37
+			},
+			"examples/tab-with-segmented-control.html": {
+				"href": "examples/tab-with-segmented-control.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 38
+			},
+			"examples/input.html": {
+				"href": "examples/input.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 39
+			},
+			"examples/lazyload-image.html": {
+				"href": "examples/lazyload-image.html",
+				"resources": [
+					"css/app.css",
+					"js/mui.lazyload.js",
+					"js/mui.lazyload.img.js",
+					"images/60x60.gif"
+				],
+				"priority": 40
+			},
+			"examples/dtpicker.html": {
+				"href": "examples/dtpicker.html",
+				"resources": [
+					"css/app.css",
+					"css/mui.picker.min.css",
+					"js/mui.picker.min.js",
+					"css/mui.picker.css",
+					"css/mui.dtpicker.css",
+					"js/mui.picker.js",
+					"js/mui.dtpicker.js"
+				],
+				"priority": 41
+			},
+			"examples/slider-table-pagination.html": {
+				"href": "examples/slider-table-pagination.html",
+				"resources": [
+					"images/shuijiao.jpg",
+					"css/app.css",
+					"images/muwu.jpg",
+					"images/cbd.jpg",
+					"images/yuantiao.jpg"
+				],
+				"priority": 42
+			},
+			"examples/buttons.html": {
+				"href": "examples/buttons.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 43
+			},
+			"examples/indexed-list.html": {
+				"href": "examples/indexed-list.html",
+				"resources": [
+					"css/mui.indexedlist.css",
+					"js/mui.indexedlist.js"
+				],
+				"priority": 44
+			},
+			"examples/date.html": {
+				"href": "examples/date.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 45
+			},
+			"examples/offcanvas-drag-down.html": {
+				"href": "examples/offcanvas-drag-down.html",
+				"resources": [],
+				"priority": 47
+			},
+			"examples/tableviews.html": {
+				"href": "examples/tableviews.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 48
+			},
+			"examples/slider-default.html": {
+				"href": "examples/slider-default.html",
+				"resources": [
+					"images/shuijiao.jpg",
+					"css/app.css",
+					"images/muwu.jpg",
+					"images/cbd.jpg",
+					"images/yuantiao.jpg"
+				],
+				"priority": 49
+			},
+			"examples/badges.html": {
+				"href": "examples/badges.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 50
+			},
+			"examples/slider-with-title.html": {
+				"href": "examples/slider-with-title.html",
+				"resources": [
+					"images/shuijiao.jpg",
+					"css/app.css",
+					"images/muwu.jpg",
+					"images/cbd.jpg",
+					"images/yuantiao.jpg"
+				],
+				"priority": 51
+			},
+			"examples/tableviews-with-badges.html": {
+				"href": "examples/tableviews-with-badges.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 52
+			},
+			"examples/range.html": {
+				"href": "examples/range.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 53
+			},
+			"examples/offcanvas-drag-right-plus-menu.html": {
+				"href": "examples/offcanvas-drag-right-plus-menu.html",
+				"resources": [],
+				"priority": 54
+			},
+			"examples/offcanvas-drag-right-plus-main.html": {
+				"href": "examples/offcanvas-drag-right-plus-main.html",
+				"resources": [],
+				"refer": [
+					"examples/offcanvas-drag-right-plus-menu.html"
+				],
+				"priority": 54
+			},
+			"examples/tabbar-with-submenus.html": {
+				"href": "examples/tabbar-with-submenus.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 55
+			},
+			"examples/actionsheet.html": {
+				"href": "examples/actionsheet.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 56
+			},
+			"examples/offcanvas-drag-left.html": {
+				"href": "examples/offcanvas-drag-left.html",
+				"priority": 3
+			},
+			"examples/dialog.html": {
+				"href": "examples/dialog.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 58
+			},
+			"examples/ad.html": {
+				"href": "examples/ad.html",
+				"resources": [
+					"js/ad.js"
+				],
+				"priority": 59
+			},
+			"examples/locker-dom.html": {
+				"href": "examples/locker-dom.html",
+				"resources": [
+					"css/app.css",
+					"js/mui.locker.js"
+				],
+				"priority": 60
+			},
+			"examples/pullrefresh_sub.html": {
+				"href": "examples/pullrefresh_sub.html",
+				"resources": [],
+				"priority": 61
+			},
+			"examples/pullrefresh_main.html": {
+				"href": "examples/pullrefresh_main.html",
+				"priority": 5
+			},
+			"examples/switches.html": {
+				"href": "examples/switches.html",
+				"priority": 6
+			},
+			"examples/tabbar-labels-only.html": {
+				"href": "examples/tabbar-labels-only.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 63
+			},
+			"examples/feedback.html": {
+				"href": "examples/feedback.html",
+				"resources": [
+					"css/feedback-page.css",
+					"images/iconfont-tianjia.png",
+					"libs/easymob-webim-sdk/strophe-custom-2.0.0.js",
+					"libs/easymob-webim-sdk/easemob.im-1.0.5.js",
+					"css/app.css",
+					"libs/easymob-webim-sdk/json2.js",
+					"js/feedback-page.js",
+					"libs/easymob-webim-sdk/jquery-1.11.1.js",
+					"js/feedback.js"
+				],
+				"priority": 64
+			},
+			"examples/info.html": {
+				"href": "examples/info.html",
+				"resources": [
+					"css/app.css"
+				],
+				"priority": 1
+			},
+			"mypages/photo.html": {
+				"resources": [
+					"js/mui.zoom.js",
+					"images/zwf1.jpg",
+					"js/mui.min.js",
+					"css/news.css",
+					"css/mui.min.css",
+					"js/mui.previewimage.js",
+					"fonts/iconfont.ttf",
+					"Controller/photo.controller.js",
+					"js/imgloading.js",
+					"images/loading.gif"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mypages/news.html": {
+				"resources": [
+					"js/mui.zoom.js",
+					"Controller/news.controller.js",
+					"js/mui.min.js",
+					"css/news.css",
+					"fonts/mui.ttf",
+					"css/mui.min.css",
+					"js/mui.previewimage.js",
+					"fonts/iconfont.ttf",
+					"js/imgloading.js",
+					"images/loading.gif"
+				],
+				"refer": [
+					"mypages/news_comment_add.html"
+				],
+				"priority": 0
+			},
+			"mypages/search_photo.html": {
+				"resources": [
+					"js/mui.min.js",
+					"Controller/search_photo.controller.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mypages/news_comment_add.html": {
+				"resources": [
+					"js/mui.min.js",
+					"Controller/news_comment_add.controller.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mypages/pay_member_info.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"fonts/iconfont.ttf",
+					"Controller/pay_member_info.controller.js"
+				],
+				"refer": [
+					"mypages/pay_choice_list.html"
+				],
+				"priority": 0
+			},
+			"mypages/suggestion.html": {
+				"resources": [
+					"js/mui.min.js",
+					"Controller/suggestion.controller.js",
+					"css/mui.min.css",
+					"fonts/iconfont.ttf"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mypages/pay_choice_list.html": {
+				"resources": [
+					"images/zfb_icon.jpg",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css",
+					"fonts/iconfont.ttf"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"mypages/useinfo_change.html": {
+				"resources": [
+					"images/zwf1.jpg",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css",
+					"Controller/userinfo_change.controller.js",
+					"fonts/iconfont.ttf"
+				],
+				"refer": [],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"libs/ios/themastergolfCoProfile.mobileprovision",
+				"mypages/register.html",
+				"Controller/search_news.controller.js",
+				"libs/android/master_android.keystore",
+				"libs/ios/mastergolfco.p12",
+				"Controller/change_nickname.controller.js",
+				"images/42x42.gif",
+				"images/pull_arrow.png",
+				"js/common.js",
+				"page_photollist-bk.html",
+				"js/mui.listpicker.js",
+				"js/mui.js",
+				"mypages/imageviewer.html",
+				"Controller/register.controller.js",
+				"mypages/search_news.html",
+				"mypages/change_nickname.html",
+				"libs/easymob-webim-sdk/quickstart.md",
+				"css/mui.listpicker.css",
+				"mypages/guide.html",
+				"images/pull_fresh.png",
+				"mypages/template.html",
+				"css/mui.css",
+				"js/mui.picker.all.js",
+				"js/immersed.js",
+				"images/zwt.jpg",
+				"css/mui.picker.all.css",
+				"mypages/change_sex.html",
+				"Controller/change_sex.controller.js"
+			]
 		}
 	}
 }

@@ -27,6 +27,18 @@
 		opacity: 1;
 	}
 }
+.opacity-out{
+	animation:opacity-out-ac 2s ease  forwards;
+}
+@-webkit-keyframes opacity-out-ac{
+	from{
+		opacity: 1;
+	}
+	to{
+		opacity: 0;
+	}
+}
+
  /*全局设置字号*/
 html{font-size:10px}
 @media screen and (min-width:320px) and (max-width:375px){html{font-size:13px}}

@@ -7,6 +7,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="HandheldFriendly" content="true"/>
+		<meta name="MobileOptimized" content="320"/>
 		<link rel="stylesheet" href="css/mui.min.css">
 		<style>
 			.my-mui-bar-tab {
@@ -46,6 +48,9 @@
 				color: #fe6f5f;
 			}
 		</style>
+		<script src="js/mui.min.js"></script>
+		<script src="js/update.js" type="text/javascript" charset="utf-8"></script>
+
 	</head>
 
 	<body>
@@ -69,9 +74,7 @@
 				<p>我</p>
 			</a>
 		</nav>
-		<script src="js/mui.min.js"></script>
-		<script src="js/update.js" type="text/javascript" charset="utf-8"></script>
-
+		
 		<script>
 			var menu = null,
 				main = null;
@@ -113,6 +116,7 @@
 				bottom: '50px',
 				bounce: 'vertical',
 				scrollsToTop: true,
+//				hardwareAccelerated: true,                
 			};
 			//个人中心页面定制样式
 			var subpage_style3 = {
@@ -199,7 +203,6 @@
 		   	   	   	  aniShow:'slide-in-bottom',
 		   	   	   	  duration:'300',
 		   	   	   }
-		   	   	   
  		   	   	})
 		   	   }else if(_index=1){
                  mui.openWindow({
@@ -210,15 +213,8 @@
 		   	   	   	  duration:'300',
 		   	   	   }
                  })
-                 
 		   	   }
 		   })
-		   
-		   
 		</script>
 	</body>
-	
-	
-	
-
 </html>

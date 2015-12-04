@@ -22,11 +22,9 @@ pay_next_btn.addEventListener('tap', function() {
 }, false);
 
 function getPayMemberInfo(){
-	var wating=plus.nativeUI.showWaiting()
 	mui.ajax('http://sheying.development.mastergolf.cn/api/v1/user/member_info.json',{
 		type:'get',
 	    success:function(data){
-             wating.close()
              var code=data.code
             if(code==10000){
              	pay_memenr_info.innerHTML=data.data.content
