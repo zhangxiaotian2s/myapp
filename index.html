@@ -89,7 +89,7 @@
 			document.querySelector('header').addEventListener('doubletap', function() {
 				main.children()[0].evalJS('mui.scrollTo(0, 100)');
 			});
-			//首页返回键处理
+			//首页返回键处理  
 			//处理逻辑：1秒内，连续两次按返回键，则退出应用；
 			var first = null;
 			mui.back = function() {
